@@ -16,8 +16,8 @@ public class GrammarService {
     private final IRepository<Question> questionRepo;
 
 
-    public GrammarService(IRepository<Grammar> readingRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo) {
-        this.grammarRepo = readingRepo;
+    public GrammarService(IRepository<Grammar> grammarRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo) {
+        this.grammarRepo = grammarRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
         this.questionRepo = questionRepo;
@@ -101,9 +101,9 @@ public class GrammarService {
             return "Correct!";
         else{
             Student student=getStudentById(studentId);
-            List<Question> pastMistakes=student.getPastReadingMistakes();
+            List<Question> pastMistakes=student.getPastGrammarMistakes();
             pastMistakes.add(question);
-            student.setPastReadingMistakes(pastMistakes);
+            student.setPastGrammarMistakes(pastMistakes);
             studentRepo.update(student);
             return "Wrong!";
         }
