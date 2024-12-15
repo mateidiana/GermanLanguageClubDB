@@ -176,12 +176,79 @@ public class ReadingService {
         }
     }
 
-    public void createReadingCourse(int courseId, int teacherId,String courseName, Integer maxStudents, int exerciseSet){
+    public void createReadingCourse(int courseId, int teacherId, String courseName, Integer maxStudents, int exerciseSet){
+        Reading r1=new Reading(courseId,courseName,teacherId,maxStudents);
+        readingRepo.create(r1);
+        if(exerciseSet==1)
+        {
+            int nextId=questionRepo.getAll().size();
+            Question q1=new Question(nextId,"Der Diener kann auf alle Fragen des Ich-Erzählers antworten.","falsch");
+            questionRepo.create(q1);
+            q1.setReadingId(courseId);
+            questionRepo.update(q1);
+            List<Question> questions=new ArrayList<>();
+            questions.add(q1);
+            r1.setExercises(questions);
+            r1.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
 
+        }
+        r1.setTextTitle("Der Aufbruch");
+        r1.setTextAuthor("Franz Kafka");
+        readingRepo.update(r1);
     }
 
     public void updateReadingCourse(int courseId, int teacherId,String courseName, Integer maxStudents, int exerciseSet){
+        Reading course=getReadingById(courseId);
 
+        course.setCourseName(courseName);
+        course.setTeacher(teacherId);
+        course.setAvailableSlots(maxStudents);
+
+        if(exerciseSet==1)
+        {
+            int nextId=questionRepo.getAll().size();
+            Question q1=new Question(nextId,"Der Diener kann auf alle Fragen des Ich-Erzählers antworten.","falsch");
+            questionRepo.create(q1);
+            q1.setReadingId(courseId);
+            questionRepo.update(q1);
+
+            List<Question> questions=new ArrayList<>();
+            questions.add(q1);
+            course.setExercises(questions);
+            course.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
+            course.setTextTitle("Der Aufbruch");
+            course.setTextAuthor("Franz Kafka");
+        }
+        readingRepo.update(course);
+    }
+
+    public List<Reading> viewReadingCoursesTaughtByTeacher(int teacherId){
+        List<Reading> taughtCourses=new ArrayList<>();
+        for(Reading course:readingRepo.getAll())
+            if (course.getTeacher()==teacherId)
+                taughtCourses.add(course);
+        return taughtCourses;
+
+    }
+
+    public List<Book> viewMandatoryBooks(int courseId){
+        Reading course=getReadingById(courseId);
+        return course.getMandatoryBooks();
+    }
+
+    public boolean addMandatoryBook(Integer teacherId, Integer courseId, String title, String author){
+        Reading course=getReadingById(courseId);
+        int nextId=bookRepo.getAll().size();
+        Book book=new Book(nextId, title, author);
+        bookRepo.create(book);
+
+        if(course.getTeacher()==teacherId)
+        {
+            course.getMandatoryBooks().add(book);
+            readingRepo.update(course);
+            return true;
+        }
+        else return false;
     }
 
 

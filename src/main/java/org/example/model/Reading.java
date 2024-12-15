@@ -8,6 +8,8 @@ public class Reading extends Course{
     private List<Book> mandatoryBooks = new ArrayList<>();
     private String textTitle;
     private String textAuthor;
+
+    private String text;
     private List<Question> exercises=new ArrayList<>();
 
     public Reading(int id, String courseName, int teacher, Integer maxStudents)
@@ -34,6 +36,9 @@ public class Reading extends Course{
 
     public String getTextAuthor(){return textAuthor;}
     public void setTextAuthor(String textAuthor){this.textAuthor=textAuthor;}
+
+    public String getText(){return text;}
+    public void setText(String text){this.text=text;}
 
     @Override
     public String toString() {

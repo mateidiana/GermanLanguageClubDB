@@ -6,14 +6,12 @@ import java.util.List;
 public class Student extends Person {
     private List<Reading> readingCourses = new ArrayList<>();
     private List<Grammar> grammarCourses = new ArrayList<>();
-    private List<Writing> writingCourses = new ArrayList<>();
     private List<Vocabulary> vocabCourses = new ArrayList<>();
     private List<Question> pastReadingMistakes;
     private List<Question> pastGrammarMistakes;
     private List<Word> pastVocabMistakes;
     private List<ExamResult> examResults;
-    //private Map<Writing, Float> writingFeedback=new HashMap<>();
-    private List<WritingFeedback> writingFeedback;
+
 
     public Student(String name, int studentId) {
         super(studentId, name);
@@ -30,12 +28,6 @@ public class Student extends Person {
     }
 
     public void setGrammarCourses(List<Grammar> grammarCourses){this.grammarCourses=grammarCourses;}
-
-    public List<Writing> getWritingCourses() {
-        return writingCourses;
-    }
-
-    public void setWritingCourses(List<Writing> writingCourses){this.writingCourses=writingCourses;}
 
     public List<Vocabulary> getVocabCourses() {
         return vocabCourses;
@@ -71,21 +63,6 @@ public class Student extends Person {
 
     public void setPastVocabMistakes(List<Word> vocabs){this.pastVocabMistakes=vocabs;}
 
-//    public Map<Writing, Float> getWritingFeedback() {
-//        return writingFeedback;
-//    }
-//
-//    public void setWritingFeedback(Map<Writing, Float> writingFeedback) {
-//        this.writingFeedback = writingFeedback;
-//    }
-
-    public List<WritingFeedback> getWritingFeedback() {
-        return writingFeedback;
-    }
-
-    public void setWritingFeedback(List<WritingFeedback> writingFeedback) {
-        this.writingFeedback = writingFeedback;
-    }
 
     @Override
     public String toString() {

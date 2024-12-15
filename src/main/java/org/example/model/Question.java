@@ -21,6 +21,16 @@ public class Question extends Entity{
         public String getRightAnswer(){return rightAnswer;}
         public void setRightAnswer(String answer){this.rightAnswer=answer;}
 
+    public int getReadingId(){return readingId;}
+    public void setReadingId(int readingId){this.readingId=readingId;}
+
+    public int getGrammarId(){return grammarId;}
+    public void setGrammarId(int grammarId){this.grammarId=grammarId;}
+    public int getReadingExamId(){return readingExamId;}
+    public void setReadingExamId(int readingId){this.readingExamId=readingId;}
+    public int getGrammarExamId(){return grammarExamId;}
+    public void setGrammarExamId(int grammarId){this.grammarExamId=grammarId;}
+
         public String toString(){
             return "\n"+question+"\n";
         }
