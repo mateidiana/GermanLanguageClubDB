@@ -123,6 +123,34 @@ public class ReadingService {
         }
     }
 
+
+    public List<Question> reviewPastReadingMistakes(int studentId){
+        Student student= getStudentById(studentId);
+        return student.getPastReadingMistakes();
+    }
+
+    public List<Reading> getAvailableReadingCourses(){
+        return readingRepo.getAll();
+    }
+
+    public List<Student> getAllStudents() {
+        return studentRepo.getAll();
+    }
+
+    public List<Student> getEnrolledStudents(int courseId) {
+        Reading course = getReadingById(courseId);
+        return course.getEnrolledStudents();
+    }
+
+    public List<Student> showStudentsEnrolledInReadingCourses(){
+        List<Student> studentList=new ArrayList<>();
+        for(Student student:studentRepo.getAll())
+            if (!student.getReadingCourses().isEmpty())
+                studentList.add(student);
+        return studentList;
+
+    }
+
     //in view
     //int score
     //read(courseId)
