@@ -151,6 +151,43 @@ public class ReadingService {
 
     }
 
+    public boolean removeCourse(int courseId, int teacherId) {
+        Reading course = getReadingById(courseId);
+        if (course.getTeacher()==teacherId){
+            readingRepo.delete(courseId);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public void createOrUpdateReadingCourse(int courseId, int teacherId, String courseName, Integer maxStudents, int exerciseSet){
+        int found=0;
+        for (Reading course: readingRepo.getAll()){
+            if (course.getId()==courseId)
+            {
+                found=1;
+                updateReadingCourse(courseId,teacherId,courseName,maxStudents, exerciseSet);
+                return;
+            }
+        }
+        if (found==0){
+            createReadingCourse(courseId,teacherId,courseName,maxStudents, exerciseSet);
+        }
+    }
+
+    public void createReadingCourse(int courseId, int teacherId,String courseName, Integer maxStudents, int exerciseSet){
+
+    }
+
+    public void updateReadingCourse(int courseId, int teacherId,String courseName, Integer maxStudents, int exerciseSet){
+
+    }
+
+
+
+
+
     //in view
     //int score
     //read(courseId)
