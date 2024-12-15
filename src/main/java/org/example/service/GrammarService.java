@@ -92,7 +92,6 @@ public class GrammarService {
         if (foundCourse==0){
             return new ArrayList<>();
             }
-
             return course.getExercises();
     }
 
@@ -206,5 +205,21 @@ public class GrammarService {
         }
         else
             return false;
+    }
+
+    public void viewCourseTaughtByTeacher(Integer teacherId) {
+
+        for (Grammar course : grammarRepo.getAll()) {
+            if (course.getTeacher()==teacherId) {
+                System.out.println(course.getCourseName());
+            }
+        }
+    }
+
+    public void showEnrolledGrammarCourses(Integer studentId){
+        Student student = getStudentById(studentId);
+        for (Course course:student.getGrammarCourses())
+            if (course.getCourseName().contains("Grammar"))
+                System.out.println(course);
     }
 }
