@@ -14,6 +14,7 @@ public class StudentService {
     }
 
     public boolean createStudent(int studentId, String name){
+        dataCheck(studentId,name);
         for(Student student:studentRepo.getAll())
             if (student.getId()==studentId){
                 return false;
