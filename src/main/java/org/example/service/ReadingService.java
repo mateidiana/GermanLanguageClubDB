@@ -258,10 +258,15 @@ public class ReadingService {
 
     }
 
-    public List<Book> viewMandatoryBooks(int courseId){
+    public List<Book> viewMandatoryBooks(int studentId,int courseId){
         idDataCheck(courseId);
-        Reading course=getReadingById(courseId);
-        return course.getMandatoryBooks();
+        idDataCheck(studentId);
+
+        for (Reading course:getStudentById(studentId).getReadingCourses())
+            if (course.getId()==courseId)
+                return course.getMandatoryBooks();
+        return new ArrayList<>();
+
     }
 
     public boolean addMandatoryBook(Integer teacherId, Integer courseId, String title, String author){

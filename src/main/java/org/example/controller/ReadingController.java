@@ -10,6 +10,10 @@ public class ReadingController {
 
     public ReadingController(ReadingService readingService){this.readingService=readingService;}
 
+    public Reading getReadingById(int id){return readingService.getReadingById(id);}
+
+    public Question getQuestionById(int id){return readingService.getQuestionById(id);}
+
     public void enroll(int studentId, int courseId){readingService.enroll(studentId,courseId);}
 
     public List<Reading> showEnrolledReadingCourses(int studentId){return readingService.showEnrolledReadingCourses(studentId);}
@@ -36,7 +40,7 @@ public class ReadingController {
 
     public List<Reading> viewReadingCoursesTaughtByTeacher(int teacherId){return readingService.viewReadingCoursesTaughtByTeacher(teacherId);}
 
-    public List<Book> viewMandatoryBooks(int courseId){return readingService.viewMandatoryBooks(courseId);}
+    public List<Book> viewMandatoryBooks(int studentId, int courseId){return readingService.viewMandatoryBooks(studentId,courseId);}
 
     public boolean addMandatoryBook(Integer teacherId, Integer courseId, String title, String author){return readingService.addMandatoryBook(teacherId,courseId,title,author);}
 }
