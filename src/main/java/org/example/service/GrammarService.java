@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.model.*;
+import org.example.model.Exceptions.EntityNotFoundException;
 import org.example.model.Exceptions.ValidationException;
 import org.example.repo.IRepository;
 
@@ -25,39 +26,45 @@ public class GrammarService {
     }
 
     public Student getStudentById(int studentId){
+        idDataCheck(studentId);
         for (Student student : studentRepo.getAll()) {
             if (student.getId()==studentId)
                 return student;
         }
-        return null;
+        throw new EntityNotFoundException("Student not found!");
     }
 
     public Teacher getTeacherById(int teacherId){
+        idDataCheck(teacherId);
         for (Teacher teacher : teacherRepo.getAll()) {
             if (teacher.getId()==teacherId)
                 return teacher;
         }
-        return null;
+        throw new EntityNotFoundException("Teacher not found!");
     }
 
     public Grammar getGrammarById(int grammarId){
+        idDataCheck(grammarId);
         for (Grammar grammar : grammarRepo.getAll()) {
             if (grammar.getId()==grammarId)
                 return grammar;
         }
-        return null;
+        throw new EntityNotFoundException("Grammar course not found!");
     }
 
     public Question getQuestionById(int questionId){
+        idDataCheck(questionId);
         for (Question question : questionRepo.getAll()) {
             if (question.getId()==questionId)
                 return question;
         }
-        return null;
+        throw new EntityNotFoundException("Question not found!");
     }
 
 
-    public void enroll(Integer studentId, Integer grammarCourseId) {
+    public void enroll(int studentId, int grammarCourseId) {
+        idDataCheck(studentId);
+        idDataCheck(grammarCourseId);
         int alreadyEnrolled=0;
 
         Student student = getStudentById(studentId);
@@ -81,7 +88,15 @@ public class GrammarService {
 
     }
 
-    public List<Question> practiceGrammar(Integer studentId, Integer courseId) {
+    public List<Grammar> showEnrolledGrammarCourses(int studentId){
+        idDataCheck(studentId);
+        Student student=getStudentById(studentId);
+        return student.getGrammarCourses();
+    }
+
+    public List<Question> practiceGrammar(int studentId, int courseId) {
+        idDataCheck(studentId);
+        idDataCheck(courseId);
 
         Student student = getStudentById(studentId);
         Grammar course = getGrammarById(courseId);
@@ -101,6 +116,10 @@ public class GrammarService {
     }
 
     public String handleAnswer(int studentId, int questionId, String answer){
+        idDataCheck(studentId);
+        idDataCheck(questionId);
+        stringDataCheck(answer);
+
         Question question=getQuestionById(questionId);
         if (answer.equals(question.getRightAnswer()))
             return "Correct!";
@@ -116,14 +135,11 @@ public class GrammarService {
 
 
     public List<Question> reviewPastGrammarMistakes(int studentId){
+        idDataCheck(studentId);
         Student student= getStudentById(studentId);
         return student.getPastGrammarMistakes();
     }
 
-    public List<Grammar> showEnrolledGrammarCourses(int studentId){
-        Student student=getStudentById(studentId);
-        return student.getGrammarCourses();
-    }
 
     public List<Grammar> getAvailableGrammarCourses(){
         return grammarRepo.getAll();
@@ -134,6 +150,7 @@ public class GrammarService {
     }
 
     public List<Student> getEnrolledStudents(int courseId) {
+        idDataCheck(courseId);
         Grammar course = getGrammarById(courseId);
         return course.getEnrolledStudents();
     }
@@ -147,6 +164,8 @@ public class GrammarService {
     }
 
     public boolean removeCourse(int courseId, int teacherId) {
+        idDataCheck(courseId);
+        idDataCheck(teacherId);
         Grammar course = getGrammarById(courseId);
         if (course.getTeacher()==teacherId){
             grammarRepo.delete(courseId);
@@ -156,7 +175,27 @@ public class GrammarService {
             return false;
     }
 
-    public void createGrammarCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
+    public void createOrUpdateGrammarCourse(int courseId, int teacherId, String courseName, Integer maxStudents){
+        idDataCheck(courseId);
+        idDataCheck(teacherId);
+        stringDataCheck(courseName);
+        intDataCheck(maxStudents);
+
+        int found=0;
+        for (Grammar course: grammarRepo.getAll()){
+            if (course.getId()==courseId)
+            {
+                found=1;
+                updateGrammarCourse(courseId,teacherId,courseName,maxStudents);
+                return;
+            }
+        }
+        if (found==0){
+            createGrammarCourse(courseId,teacherId,courseName,maxStudents);
+        }
+    }
+
+    public void createGrammarCourse(int courseId, int teacherId, String courseName, Integer maxStudents) {
 
         Grammar g1 = new Grammar(courseId, courseName, teacherId, maxStudents);
         grammarRepo.create(g1);
@@ -175,7 +214,7 @@ public class GrammarService {
         grammarRepo.update(g1);
     }
 
-    public void updateGrammarCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
+    public void updateGrammarCourse(int courseId, int teacherId, String courseName, Integer maxStudents) {
 
         Grammar course = getGrammarById(courseId);
         Teacher teacher = getTeacherById(teacherId);
@@ -199,6 +238,7 @@ public class GrammarService {
     }
 
     public List<Grammar> viewGrammarCoursesTaughtByTeacher(int teacherId){
+        idDataCheck(teacherId);
         List<Grammar> taughtCourses=new ArrayList<>();
         for(Grammar course:grammarRepo.getAll())
             if (course.getTeacher()==teacherId)

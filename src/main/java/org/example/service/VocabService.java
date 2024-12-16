@@ -1,6 +1,8 @@
 package org.example.service;
 
 import org.example.model.*;
+import org.example.model.Exceptions.EntityNotFoundException;
+import org.example.model.Exceptions.ValidationException;
 import org.example.repo.IRepository;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class VocabService {
             if (student.getId()==studentId)
                 return student;
         }
-        return null;
+        throw new EntityNotFoundException("Student not found!");
     }
 
     public Teacher getTeacherById(int teacherId){
@@ -36,7 +38,7 @@ public class VocabService {
             if (teacher.getId()==teacherId)
                 return teacher;
         }
-        return null;
+        throw new EntityNotFoundException("Teacher not found!");
     }
 
     public Vocabulary getVocabularyById(int vocabId){
@@ -44,7 +46,7 @@ public class VocabService {
             if (vocab.getId()==vocabId)
                 return vocab;
         }
-        return null;
+        throw new EntityNotFoundException("Vocabulary course not found!");
     }
 
     public Word getWordById(int wordId){
@@ -52,10 +54,12 @@ public class VocabService {
             if (word.getId()==wordId)
                 return word;
         }
-        return null;
+        throw new EntityNotFoundException("Word not found!");
     }
 
-    public void enroll(Integer studentId, Integer vocabCourseId) {
+    public void enroll(int studentId, int vocabCourseId) {
+        idDataCheck(studentId);
+        idDataCheck(vocabCourseId);
         int alreadyEnrolled=0;
 
         Student student = getStudentById(studentId);
@@ -79,7 +83,15 @@ public class VocabService {
 
     }
 
-    public List<Word> practiceVocabulary(Integer studentId, Integer courseId) {
+    public List<Vocabulary> showEnrolledVocabularyCourses(int studentId){
+        idDataCheck(studentId);
+        Student student=getStudentById(studentId);
+        return student.getVocabCourses();
+    }
+
+    public List<Word> practiceVocabulary(int studentId, int courseId) {
+        idDataCheck(studentId);
+        idDataCheck(courseId);
 
         Student student = getStudentById(studentId);
         Vocabulary course = getVocabularyById(courseId);
@@ -99,6 +111,9 @@ public class VocabService {
     }
 
     public String handleAnswer(int studentId, int wordId, String answer){
+        idDataCheck(studentId);
+        idDataCheck(wordId);
+        stringDataCheck(answer);
         Word word=getWordById(wordId);
         if (answer.equals(word.getMeaning()))
             return "Correct!";
@@ -113,13 +128,9 @@ public class VocabService {
     }
 
     public List<Word> reviewPastVocabMistakes(int studentId){
+        idDataCheck(studentId);
         Student student= getStudentById(studentId);
         return student.getPastVocabMistakes();
-    }
-
-    public List<Vocabulary> showEnrolledVocabularyCourses(int studentId){
-        Student student=getStudentById(studentId);
-        return student.getVocabCourses();
     }
 
 
@@ -132,6 +143,7 @@ public class VocabService {
     }
 
     public List<Student> getEnrolledStudents(int courseId) {
+        idDataCheck(courseId);
         Vocabulary course = getVocabularyById(courseId);
         return course.getEnrolledStudents();
     }
@@ -145,6 +157,8 @@ public class VocabService {
     }
 
     public boolean removeCourse(int courseId, int teacherId) {
+        idDataCheck(courseId);
+        idDataCheck(teacherId);
         Vocabulary course = getVocabularyById(courseId);
         if (course.getTeacher()==teacherId){
             vocabRepo.delete(courseId);
@@ -154,7 +168,11 @@ public class VocabService {
             return false;
     }
 
-    public void createOrUpdateVocabCourse(int courseId, int teacherId, String courseName, Integer maxStudents, int exerciseSet){
+    public void createOrUpdateVocabCourse(int courseId, int teacherId, String courseName, Integer maxStudents){
+        idDataCheck(courseId);
+        idDataCheck(teacherId);
+        stringDataCheck(courseName);
+        intDataCheck(maxStudents);
         int found=0;
         for (Vocabulary course: vocabRepo.getAll()){
             if (course.getId()==courseId)
@@ -169,7 +187,7 @@ public class VocabService {
         }
     }
 
-    public void createVocabularyCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
+    public void createVocabularyCourse(int courseId, int teacherId, String courseName, Integer maxStudents) {
 
         Vocabulary v1 = new Vocabulary(courseId, courseName, teacherId, maxStudents);
         vocabRepo.create(v1);
@@ -189,7 +207,7 @@ public class VocabService {
         vocabRepo.update(v1);
     }
 
-    public void updateVocabularyCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
+    public void updateVocabularyCourse(int courseId, int teacherId, String courseName, Integer maxStudents) {
 
         Vocabulary course = getVocabularyById(courseId);
         Teacher teacher = getTeacherById(teacherId);
@@ -214,12 +232,28 @@ public class VocabService {
 
 
     public List<Vocabulary> viewVocabularyCoursesTaughtByTeacher(int teacherId){
+        idDataCheck(teacherId);
         List<Vocabulary> taughtCourses=new ArrayList<>();
         for(Vocabulary course:vocabRepo.getAll())
             if (course.getTeacher()==teacherId)
                 taughtCourses.add(course);
         return taughtCourses;
 
+    }
+
+    public void idDataCheck(int id){
+        if (id<1)
+            throw new ValidationException("Id cannot be less than 1!");
+    }
+
+    public void stringDataCheck(String string){
+        if (string.isEmpty())
+            throw new ValidationException("Name cannot be an empty string!");
+    }
+
+    public void intDataCheck(int number){
+        if (number<1)
+            throw new ValidationException("Number cannot be null!");
     }
 
 
