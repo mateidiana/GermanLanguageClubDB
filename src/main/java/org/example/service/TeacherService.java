@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.model.Exceptions.ValidationException;
 import org.example.model.Teacher;
 import org.example.repo.IRepository;
 
@@ -12,6 +13,7 @@ public class TeacherService {
     }
 
     public boolean createTeacher(int teacherId, String name){
+        dataCheck(teacherId,name);
         for(Teacher teacher:teacherRepo.getAll())
             if (teacher.getId()==teacherId){
                 return false;
@@ -28,5 +30,12 @@ public class TeacherService {
                 return teacher;
         }
         return null;
+    }
+
+    public void dataCheck(int teacherId, String name){
+        if (name.isEmpty())
+            throw new ValidationException("Name cannot be an empty string!");
+        if (teacherId<1)
+            throw new ValidationException("Id cannot be less than 1!");
     }
 }

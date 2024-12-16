@@ -47,9 +47,12 @@ public class VocabService {
         return null;
     }
 
-    public List<Vocabulary> showEnrolledVocabularyCourses(int studentId){
-        Student student=getStudentById(studentId);
-        return student.getVocabCourses();
+    public Word getWordById(int wordId){
+        for (Word word : wordRepo.getAll()) {
+            if (word.getId()==wordId)
+                return word;
+        }
+        return null;
     }
 
     public void enroll(Integer studentId, Integer vocabCourseId) {
@@ -109,23 +112,16 @@ public class VocabService {
         }
     }
 
-    public List<Word> reviewPastMistakes(Integer studentId, Integer courseId) {
-
-        Student student = getStudentById(studentId);
-        Vocabulary course = getVocabularyById(courseId);
-
-        int foundCourse=0;
-        for (Course findCourse : student.getVocabCourses()){
-            if (findCourse.getId()==courseId) {
-                foundCourse=1;
-                break;
-            }
-        }
-        if (foundCourse==0){
-            return new ArrayList<>();
-        }
+    public List<Word> reviewPastVocabMistakes(int studentId){
+        Student student= getStudentById(studentId);
         return student.getPastVocabMistakes();
     }
+
+    public List<Vocabulary> showEnrolledVocabularyCourses(int studentId){
+        Student student=getStudentById(studentId);
+        return student.getVocabCourses();
+    }
+
 
     public List<Vocabulary> getAvailableVocabularyCourses(){
         return vocabRepo.getAll();
@@ -146,6 +142,31 @@ public class VocabService {
             if (!student.getVocabCourses().isEmpty())
                 studentList.add(student);
         return studentList;
+    }
+
+    public boolean removeCourse(int courseId, int teacherId) {
+        Vocabulary course = getVocabularyById(courseId);
+        if (course.getTeacher()==teacherId){
+            vocabRepo.delete(courseId);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public void createOrUpdateVocabCourse(int courseId, int teacherId, String courseName, Integer maxStudents, int exerciseSet){
+        int found=0;
+        for (Vocabulary course: vocabRepo.getAll()){
+            if (course.getId()==courseId)
+            {
+                found=1;
+                updateVocabularyCourse(courseId,teacherId,courseName,maxStudents);
+                return;
+            }
+        }
+        if (found==0){
+            createVocabularyCourse(courseId,teacherId,courseName,maxStudents);
+        }
     }
 
     public void createVocabularyCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
@@ -190,36 +211,17 @@ public class VocabService {
         v1.setWords(vocabExercises);
         vocabRepo.update(v1);
     }
-    public boolean removeCourse(int courseId, int teacherId) {
-        Vocabulary course = getVocabularyById(courseId);
-        if (course.getTeacher()==teacherId){
-            vocabRepo.delete(courseId);
-            return true;
-        }
-        else
-            return false;
+
+
+    public List<Vocabulary> viewVocabularyCoursesTaughtByTeacher(int teacherId){
+        List<Vocabulary> taughtCourses=new ArrayList<>();
+        for(Vocabulary course:vocabRepo.getAll())
+            if (course.getTeacher()==teacherId)
+                taughtCourses.add(course);
+        return taughtCourses;
+
     }
 
-    public void viewCourseTaughtByTeacher(Integer teacherId) {
 
-        for (Vocabulary course : vocabRepo.getAll()) {
-            if (course.getTeacher()==teacherId) {
-                System.out.println(course.getCourseName());
-            }
-        }
-    }
 
-    public void showEnrolledVocabularyCourses(Integer studentId){
-        Student student = getStudentById(studentId);
-        for (Course course:student.getVocabCourses())
-            if (course.getCourseName().contains("Vocabulary"))
-                System.out.println(course);
-    }
-    public Word getWordById(int wordId){
-        for (Word word : wordRepo.getAll()) {
-            if (word.getId()==wordId)
-                return word;
-        }
-        return null;
-    }
 }

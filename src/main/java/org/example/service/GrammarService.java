@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.model.*;
+import org.example.model.Exceptions.ValidationException;
 import org.example.repo.IRepository;
 
 import java.util.ArrayList;
@@ -47,10 +48,14 @@ public class GrammarService {
         return null;
     }
 
-    public List<Grammar> showEnrolledGrammarCourses(int studentId){
-        Student student=getStudentById(studentId);
-        return student.getGrammarCourses();
+    public Question getQuestionById(int questionId){
+        for (Question question : questionRepo.getAll()) {
+            if (question.getId()==questionId)
+                return question;
+        }
+        return null;
     }
+
 
     public void enroll(Integer studentId, Integer grammarCourseId) {
         int alreadyEnrolled=0;
@@ -109,30 +114,15 @@ public class GrammarService {
         }
     }
 
-    public Question getQuestionById(int questionId){
-        for (Question question : questionRepo.getAll()) {
-            if (question.getId()==questionId)
-                return question;
-        }
-        return null;
+
+    public List<Question> reviewPastGrammarMistakes(int studentId){
+        Student student= getStudentById(studentId);
+        return student.getPastGrammarMistakes();
     }
 
-    public List<Question> reviewPastMistakes(Integer studentId, Integer courseId) {
-
-        Student student = getStudentById(studentId);
-        Grammar course = getGrammarById(courseId);
-
-        int foundCourse=0;
-        for (Course findCourse : student.getGrammarCourses()){
-            if (findCourse.getId()==courseId) {
-                foundCourse=1;
-                break;
-            }
-        }
-        if (foundCourse==0){
-            return new ArrayList<>();
-        }
-        return student.getPastGrammarMistakes();
+    public List<Grammar> showEnrolledGrammarCourses(int studentId){
+        Student student=getStudentById(studentId);
+        return student.getGrammarCourses();
     }
 
     public List<Grammar> getAvailableGrammarCourses(){
@@ -154,6 +144,16 @@ public class GrammarService {
             if (!student.getGrammarCourses().isEmpty())
                 studentList.add(student);
         return studentList;
+    }
+
+    public boolean removeCourse(int courseId, int teacherId) {
+        Grammar course = getGrammarById(courseId);
+        if (course.getTeacher()==teacherId){
+            grammarRepo.delete(courseId);
+            return true;
+        }
+        else
+            return false;
     }
 
     public void createGrammarCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
@@ -197,29 +197,29 @@ public class GrammarService {
         g1.setExercises(grammarExercises);
         grammarRepo.update(g1);
     }
-    public boolean removeCourse(int courseId, int teacherId) {
-        Grammar course = getGrammarById(courseId);
-        if (course.getTeacher()==teacherId){
-            grammarRepo.delete(courseId);
-            return true;
-        }
-        else
-            return false;
+
+    public List<Grammar> viewGrammarCoursesTaughtByTeacher(int teacherId){
+        List<Grammar> taughtCourses=new ArrayList<>();
+        for(Grammar course:grammarRepo.getAll())
+            if (course.getTeacher()==teacherId)
+                taughtCourses.add(course);
+        return taughtCourses;
+
     }
 
-    public void viewCourseTaughtByTeacher(Integer teacherId) {
 
-        for (Grammar course : grammarRepo.getAll()) {
-            if (course.getTeacher()==teacherId) {
-                System.out.println(course.getCourseName());
-            }
-        }
+    public void idDataCheck(int id){
+        if (id<1)
+            throw new ValidationException("Id cannot be less than 1!");
     }
 
-    public void showEnrolledGrammarCourses(Integer studentId){
-        Student student = getStudentById(studentId);
-        for (Course course:student.getGrammarCourses())
-            if (course.getCourseName().contains("Grammar"))
-                System.out.println(course);
+    public void stringDataCheck(String string){
+        if (string.isEmpty())
+            throw new ValidationException("Name cannot be an empty string!");
+    }
+
+    public void intDataCheck(int number){
+        if (number<1)
+            throw new ValidationException("Number cannot be null!");
     }
 }

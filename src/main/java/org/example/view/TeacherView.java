@@ -7,18 +7,18 @@ import org.example.controller.*;
  * Displays teacher functionalities
  */
 public class TeacherView {
-    //private TeacherController teacherController;
+    private TeacherController teacherController;
     private ReadingController readingController;
-    //private VocabularyController vocabController;
-    //private GrammarController grammarController;
-    //private ExamController examController;
+    private VocabularyController vocabController;
+    private GrammarController grammarController;
+    private ExamController examController;
 
-    public TeacherView(ReadingController readingController){
-        //this.teacherController=teacherController;
+    public TeacherView(TeacherController teacherController,ReadingController readingController, VocabularyController vocabController, GrammarController grammarController, ExamController examController){
+        this.teacherController=teacherController;
         this.readingController=readingController;
-//        this.vocabController=vocabController;
-//        this.grammarController=grammarController;
-//        this.examController=examController;
+        this.vocabController=vocabController;
+        this.grammarController=grammarController;
+        this.examController=examController;
     }
 
     /**

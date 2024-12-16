@@ -1,8 +1,10 @@
 package org.example.view;
 import java.util.Scanner;
 import java.util.stream.IntStream;
+import org.example.controller.GrammarController;
 import org.example.controller.ReadingController;
 import org.example.controller.*;
+import org.example.model.Exceptions.EntityNotFoundException;
 import org.example.model.Exceptions.ValidationException;
 
 /**
@@ -11,16 +13,16 @@ import org.example.model.Exceptions.ValidationException;
 public class StudentView {
     private StudentController studentController;
     private ReadingController readingController;
-//    private ExamController examController;
-//    private GrammarController grammarController;
-//    private VocabularyController vocabController;
+    private ExamController examController;
+    private GrammarController grammarController;
+    private VocabularyController vocabController;
 
-    public StudentView(StudentController studentController, ReadingController readingController){
+    public StudentView(StudentController studentController, ReadingController readingController, ExamController examController, GrammarController grammarController, VocabularyController vocabController){
         this.studentController=studentController;
         this.readingController=readingController;
-//        this.examController=examController;
-//        this.grammarController=grammarController;
-//        this.vocabController=vocabController;
+        this.examController=examController;
+        this.grammarController=grammarController;
+        this.vocabController=vocabController;
 
     }
 

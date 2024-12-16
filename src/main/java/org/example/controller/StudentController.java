@@ -1,6 +1,7 @@
 package org.example.controller;
 import org.example.service.StudentService;
 import org.example.model.Exceptions.*;
+import org.example.model.*;
 
 public class StudentController {
     private StudentService studentService;
@@ -13,5 +14,7 @@ public class StudentController {
         return studentService.createStudent(studentId,name);
     }
 
-
+    public Student getStudentById(int studentId){
+        return studentService.getStudentById(studentId);
+    }
 }
