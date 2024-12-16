@@ -26,6 +26,7 @@ public class VocabService {
     }
 
     public Student getStudentById(int studentId){
+        idDataCheck(studentId);
         for (Student student : studentRepo.getAll()) {
             if (student.getId()==studentId)
                 return student;
@@ -34,6 +35,7 @@ public class VocabService {
     }
 
     public Teacher getTeacherById(int teacherId){
+        idDataCheck(teacherId);
         for (Teacher teacher : teacherRepo.getAll()) {
             if (teacher.getId()==teacherId)
                 return teacher;
@@ -42,6 +44,7 @@ public class VocabService {
     }
 
     public Vocabulary getVocabularyById(int vocabId){
+        idDataCheck(vocabId);
         for (Vocabulary vocab : vocabRepo.getAll()) {
             if (vocab.getId()==vocabId)
                 return vocab;
@@ -50,6 +53,7 @@ public class VocabService {
     }
 
     public Word getWordById(int wordId){
+        idDataCheck(wordId);
         for (Word word : wordRepo.getAll()) {
             if (word.getId()==wordId)
                 return word;

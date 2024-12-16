@@ -2,6 +2,7 @@ package org.example.service;
 import java.util.*;
 
 import org.example.model.*;
+import org.example.model.Exceptions.EntityNotFoundException;
 import org.example.model.Exceptions.ValidationException;
 import org.example.repo.IRepository;
 
@@ -26,53 +27,63 @@ public class VocabularyExamService {
     }
 
     public Student getStudentById(int studentId){
+        idDataCheck(studentId);
         for (Student student : studentRepo.getAll()) {
             if (student.getId()==studentId)
                 return student;
         }
-        return null;
+        throw new EntityNotFoundException("Student not found!");
     }
 
     public Teacher getTeacherById(int teacherId){
+        idDataCheck(teacherId);
         for (Teacher teacher : teacherRepo.getAll()) {
             if (teacher.getId()==teacherId)
                 return teacher;
         }
-        return null;
+        throw new EntityNotFoundException("Teacher not found!");
     }
 
-    public VocabularyExam getVocabExamById(int grammarId){
+    public VocabularyExam getVocabExamById(int vocabId){
+        idDataCheck(vocabId);
         for (VocabularyExam vocabExam : vocabExamRepo.getAll()) {
-            if (vocabExam.getId()==grammarId)
+            if (vocabExam.getId()==vocabId)
                 return vocabExam;
         }
-        return null;
+        throw new EntityNotFoundException("Vocabulary exam not found!");
     }
 
     public Word getWordById(int wordId){
+        idDataCheck(wordId);
         for (Word word : wordRepo.getAll()) {
             if (word.getId()==wordId)
                 return word;
         }
-        return null;
+        throw new EntityNotFoundException("Word not found!");
     }
 
     public ExamResult getExamResultById(int resultId){
+        idDataCheck(resultId);
         for (ExamResult result:examResultRepo.getAll())
         {
             if (result.getId()==resultId)
                 return result;
         }
-        return null;
+        throw new EntityNotFoundException("Exam Result not found!");
     }
 
     public List<Word> takeVocabExam(int studentId, int examId){
+        idDataCheck(studentId);
+        idDataCheck(examId);
         if (getStudentById(studentId).getVocabCourses().isEmpty())
             return new ArrayList<>();
         else return getVocabExamById(examId).getWords();
     }
 
     public String handleAnswer(int studentId, int wordId, String answer){
+        idDataCheck(studentId);
+        idDataCheck(wordId);
+        stringDataCheck(answer);
         Word word=getWordById(wordId);
         if (answer.equals(word.getMeaning()))
             return "Correct!";
@@ -81,6 +92,7 @@ public class VocabularyExamService {
     }
 
     public List<ExamResult> showVocabExamResults(int studentId){
+        idDataCheck(studentId);
         List<ExamResult> allResults=getStudentById(studentId).getResults();
         List<ExamResult> allVocabResults=new ArrayList<>();
         for (ExamResult result:allResults)
@@ -90,6 +102,8 @@ public class VocabularyExamService {
     }
 
     public void addResult(int studentId, int examId, Float result){
+        idDataCheck(studentId);
+        idDataCheck(examId);
         int nextId=examResultRepo.getAll().size();
         ExamResult examResult=new ExamResult(nextId, examId, result, studentId);
         examResultRepo.create(examResult);
@@ -104,6 +118,7 @@ public class VocabularyExamService {
     }
 
     public List<VocabularyExam> examsOfATeacher(int teacherId){
+        idDataCheck(teacherId);
         List<VocabularyExam> exams=new ArrayList<>();
         for (VocabularyExam exam:vocabExamRepo.getAll())
             if (exam.getTeacher()==teacherId)
@@ -113,6 +128,8 @@ public class VocabularyExamService {
 
     //show results of all students on a grammar exam of a teacher
     public List<ExamResult> showAllResultsOfTeacherExam(int teacherId, int examId){
+        idDataCheck(teacherId);
+        idDataCheck(examId);
         List<ExamResult> allVocabResults=new ArrayList<>();
         if (getVocabExamById(examId).getTeacher()==teacherId){
             for (Student student:studentRepo.getAll())
@@ -125,6 +142,8 @@ public class VocabularyExamService {
     }
 
     public boolean removeVocabExam(int examId, int teacherId) {
+        idDataCheck(teacherId);
+        idDataCheck(examId);
         VocabularyExam exam = getVocabExamById(examId);
         if (exam.getTeacher()==teacherId){
             vocabExamRepo.delete(examId);
@@ -134,84 +153,84 @@ public class VocabularyExamService {
             return false;
     }
 
-    public void createOrUpdateVocabExam(int examId, int teacherId, String examName, int exerciseSet){
+    public void createOrUpdateVocabExam(int examId, int teacherId, String examName){
+        idDataCheck(teacherId);
+        idDataCheck(examId);
+        stringDataCheck(examName);
         int found=0;
         for (VocabularyExam exam: vocabExamRepo.getAll()){
             if (exam.getId()==examId)
             {
                 found=1;
-                updateVocabExam(examId,teacherId,examName,exerciseSet);
+                updateVocabExam(examId,teacherId,examName);
                 return;
             }
         }
         if (found==0){
-            createVocabExam(examId,teacherId,examName,exerciseSet);
+            createVocabExam(examId,teacherId,examName);
         }
     }
 
-    public void createVocabExam(int examId, int teacherId, String examName, int exerciseSet){
+    public void createVocabExam(int examId, int teacherId, String examName){
         VocabularyExam e1=new VocabularyExam(examId,examName,teacherId);
         vocabExamRepo.create(e1);
-        if(exerciseSet==1)
-        {
-            int nextId=wordRepo.getAll().size();
-            Word w1=new Word(nextId,"tree","Baum");
-            wordRepo.create(w1);
-            Word w2=new Word(nextId+1,"flower","Blume");
-            wordRepo.create(w2);
-            Word w3=new Word(nextId+2,"house","Haus");
-            wordRepo.create(w3);
 
-            w1.setVocabExamId(examId);
-            w2.setVocabExamId(examId);
-            w3.setVocabExamId(examId);
-            wordRepo.update(w1);
-            wordRepo.update(w2);
-            wordRepo.update(w3);
-            List<Word> words=new ArrayList<>();
-            words.add(w1);
-            words.add(w2);
-            words.add(w3);
-            e1.setWords(words);
+        int nextId=wordRepo.getAll().size();
+        Word w1=new Word(nextId,"tree","Baum");
+        wordRepo.create(w1);
+        Word w2=new Word(nextId+1,"flower","Blume");
+        wordRepo.create(w2);
+        Word w3=new Word(nextId+2,"house","Haus");
+        wordRepo.create(w3);
 
-        }
+        w1.setVocabExamId(examId);
+        w2.setVocabExamId(examId);
+        w3.setVocabExamId(examId);
+        wordRepo.update(w1);
+        wordRepo.update(w2);
+        wordRepo.update(w3);
+        List<Word> words=new ArrayList<>();
+        words.add(w1);
+        words.add(w2);
+        words.add(w3);
+        e1.setWords(words);
+
 
         vocabExamRepo.update(e1);
     }
 
-    public void updateVocabExam(int examId, int teacherId,String courseName, int exerciseSet){
+    public void updateVocabExam(int examId, int teacherId,String courseName){
         VocabularyExam exam=getVocabExamById(examId);
 
         exam.setExamName(courseName);
         exam.setTeacher(teacherId);
 
-        if(exerciseSet==1)
-        {
-            int nextId=wordRepo.getAll().size();
-            Word w1=new Word(nextId,"tree","Baum");
-            wordRepo.create(w1);
-            Word w2=new Word(nextId+1,"flower","Blume");
-            wordRepo.create(w2);
-            Word w3=new Word(nextId+2,"house","Haus");
-            wordRepo.create(w3);
+        int nextId=wordRepo.getAll().size();
+        Word w1=new Word(nextId,"tree","Baum");
+        wordRepo.create(w1);
+        Word w2=new Word(nextId+1,"flower","Blume");
+        wordRepo.create(w2);
+        Word w3=new Word(nextId+2,"house","Haus");
+        wordRepo.create(w3);
 
-            w1.setVocabExamId(examId);
-            w2.setVocabExamId(examId);
-            w3.setVocabExamId(examId);
-            wordRepo.update(w1);
-            wordRepo.update(w2);
-            wordRepo.update(w3);
+        w1.setVocabExamId(examId);
+        w2.setVocabExamId(examId);
+        w3.setVocabExamId(examId);
+        wordRepo.update(w1);
+        wordRepo.update(w2);
+        wordRepo.update(w3);
 
-            List<Word> words=new ArrayList<>();
-            words.add(w1);
-            words.add(w2);
-            words.add(w3);
-            exam.setWords(words);
-        }
+        List<Word> words=new ArrayList<>();
+        words.add(w1);
+        words.add(w2);
+        words.add(w3);
+        exam.setWords(words);
+
         vocabExamRepo.update(exam);
     }
 
     public List<Student> filterStudentsByBestGradeOnVocabExam(int examId){
+        idDataCheck(examId);
         List<Student> filteredStud=new ArrayList<>();
         for (Student stud:studentRepo.getAll())
             for (ExamResult result:stud.getResults())
