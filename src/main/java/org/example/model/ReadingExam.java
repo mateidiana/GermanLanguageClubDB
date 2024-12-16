@@ -7,7 +7,7 @@ public class ReadingExam extends Exam{
     private String textTitle;
     private String textAuthor;
     private List<Question> exercises=new ArrayList<>();
-
+    private String text;
     public ReadingExam(int id, String name, int teacher)
     {
         super(id, name, teacher);
@@ -25,6 +25,9 @@ public class ReadingExam extends Exam{
     public void setExercises(List<Question> exercises) {
         this.exercises=exercises;
     }
+
+    public String getText(){return text;}
+    public void setText(String text){this.text=text;}
 
     @Override
     public String toString() {

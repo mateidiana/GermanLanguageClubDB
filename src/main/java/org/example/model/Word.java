@@ -17,6 +17,11 @@ public class Word extends Entity{
     public String getMeaning(){return meaning;}
     public void setMeaning(String meaning){this.meaning=meaning;}
 
+    public int getVocabId(){return vocabId;}
+    public int getVocabExamId(){return vocabExamId;}
+    public void setVocabId(int vocabId){this.vocabId=vocabId;}
+    public void setVocabExamId(int vocabExamId){this.vocabExamId=vocabExamId;}
+
     public String toString(){
         return "\n"+word+":"+"\n";
     }
