@@ -2,6 +2,7 @@ package org.example.service;
 import java.util.*;
 
 import org.example.model.*;
+import org.example.model.Exceptions.ValidationException;
 import org.example.repo.IRepository;
 
 public class ReadingExamService {
@@ -201,6 +202,26 @@ public class ReadingExamService {
                     if (result.getResult()>=5.0)
                         filteredStud.add(stud);
         return filteredStud;
+    }
+
+    public void idDataCheck(int id){
+        if (id<1)
+            throw new ValidationException("Id cannot be less than 1!");
+    }
+
+    public void stringDataCheck(String string){
+        if (string.isEmpty())
+            throw new ValidationException("Name cannot be an empty string!");
+    }
+
+    public void answerDataCheck(String string){
+        if (!string.equals("wahr") && !string.equals("falsch"))
+            throw new ValidationException("Invalid answer!");
+    }
+
+    public void intDataCheck(int number){
+        if (number<1)
+            throw new ValidationException("Number cannot be null!");
     }
 
 }
