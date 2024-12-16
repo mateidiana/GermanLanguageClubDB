@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.model.Exceptions.ValidationException;
 import org.example.model.Student;
 import org.example.repo.IRepository;
 
@@ -29,6 +30,13 @@ public class StudentService {
                 return student;
         }
         return null;
+    }
+
+    public void dataCheck(int studentId, String name){
+        if (name.isEmpty())
+            throw new ValidationException("Name cannot be an empty string!");
+        if (studentId<1)
+            throw new ValidationException("Id cannot be less than 1!");
     }
 }
 
