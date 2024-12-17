@@ -8,7 +8,7 @@ import org.example.model.*;
 import org.example.view.StudentView;
 import org.example.view.TeacherView;
 import org.example.view.View;
-
+import java.sql.*;
 import java.util.Scanner;
 public class Main {
 
@@ -86,6 +86,19 @@ public class Main {
 
         View view = new View(studentView,teacherView);
         view.start();
+
+//        try {
+//            Connection connection=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/login_schema","root","Bill4761");
+//            Statement statement=connection.createStatement();
+//            ResultSet resultSet=statement.executeQuery("SELECT * FROM USERS");
+//
+//            while(resultSet.next()){
+//                System.out.println(resultSet.getString("username"));
+//                System.out.println(resultSet.getString("password"));
+//            }
+//        } catch(SQLException e){
+//            e.printStackTrace();
+//        }
 
 
 
