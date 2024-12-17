@@ -1,7 +1,6 @@
 package org.example.model;
 
 public class ExamResult extends Entity{
-    //private Exam exam;
     private int examId;
     private int studentId;
     private Float result;

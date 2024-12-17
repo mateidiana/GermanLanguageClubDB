@@ -132,14 +132,7 @@ public class Main {
 
         //Insert data into reading
         Reading reading1=new Reading(1,"Reading1",teacher1.getId(),25);
-        List<Question> questions=new ArrayList<>();
-        questions.add(question1);
-        questions.add(question2);
-        questions.add(question3);
-        questions.add(question4);
 
-
-        //reading1.setExercises(questions);
         reading1.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
         reading1.setTextAuthor("Franz Kafka");
         reading1.setTextTitle("Der Aufbruch");
@@ -151,16 +144,6 @@ public class Main {
         bookBelongsRepo.create(bookBelongsToCourse1);
         bookBelongsRepo.create(bookBelongsToCourse2);
 
-        List<Book> books=new ArrayList<>();
-        books.add(book1);
-        books.add(book2);
-        //reading1.setMandatoryBooks(books);
-        readingRepo.update(reading1);
-
-
-
-
-
 
 
 
@@ -169,9 +152,9 @@ public class Main {
         ReadingService readingService=new ReadingService(readingRepo,studentRepo,teacherRepo,questionRepo,bookRepo,enrolledRepo,bookBelongsRepo);
         GrammarService grammarService=new GrammarService(grammarRepo,studentRepo,teacherRepo,questionRepo, enrolledRepo);
         VocabService vocabService=new VocabService(vocabRepo,studentRepo,teacherRepo,wordRepo,enrolledRepo);
-        ReadingExamService readingExamService=new ReadingExamService(readingExamRepo,studentRepo,teacherRepo,questionRepo,examResultRepo);
-        GrammarExamService grammarExamService=new GrammarExamService(grammarExamRepo,studentRepo,teacherRepo,questionRepo,examResultRepo);
-        VocabularyExamService vocabularyExamService=new VocabularyExamService(vocabExamRepo,studentRepo,teacherRepo,wordRepo,examResultRepo);
+        ReadingExamService readingExamService=new ReadingExamService(readingExamRepo,studentRepo,teacherRepo,questionRepo,examResultRepo,readingRepo,enrolledRepo);
+        GrammarExamService grammarExamService=new GrammarExamService(grammarExamRepo,studentRepo,teacherRepo,questionRepo,examResultRepo,grammarRepo,enrolledRepo);
+        VocabularyExamService vocabularyExamService=new VocabularyExamService(vocabExamRepo,studentRepo,teacherRepo,wordRepo,examResultRepo,vocabRepo,enrolledRepo);
 
         StudentController studentController=new StudentController(studentService);
         TeacherController teacherController=new TeacherController(teacherService);

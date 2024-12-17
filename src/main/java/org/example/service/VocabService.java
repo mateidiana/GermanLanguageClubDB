@@ -117,17 +117,12 @@ public class VocabService {
 
     public List<Vocabulary> showEnrolledVocabularyCourses(int studentId){
         idDataCheck(studentId);
-        Student student=getStudentById(studentId);
         return getVocabCourses(studentId);
     }
 
     public List<Word> practiceVocabulary(int studentId, int courseId) {
         idDataCheck(studentId);
         idDataCheck(courseId);
-
-        Student student = getStudentById(studentId);
-        Vocabulary course = getVocabularyById(courseId);
-        List<Word> questions=new ArrayList<>();
 
         int foundCourse=0;
         for (Course findCourse : getVocabCourses(studentId)){
@@ -150,20 +145,9 @@ public class VocabService {
         if (answer.equals(word.getMeaning()))
             return "Correct!";
         else{
-//            Student student=getStudentById(studentId);
-//            List<Word> pastMistakes=student.getPastVocabMistakes();
-//            pastMistakes.add(word);
-//            student.setPastVocabMistakes(pastMistakes);
-//            studentRepo.update(student);
             return "Wrong!";
         }
     }
-
-//    public List<Word> reviewPastVocabMistakes(int studentId){
-//        idDataCheck(studentId);
-//        Student student= getStudentById(studentId);
-//        return student.getPastVocabMistakes();
-//    }
 
 
     public List<Vocabulary> getAvailableVocabularyCourses(){
@@ -176,7 +160,6 @@ public class VocabService {
 
     public List<Student> getEnrolledStudents(int courseId) {
         idDataCheck(courseId);
-        Vocabulary course = getVocabularyById(courseId);
         return getEnrolled(courseId);
     }
 
@@ -223,40 +206,16 @@ public class VocabService {
 
         Vocabulary v1 = new Vocabulary(courseId, courseName, teacherId, maxStudents);
         vocabRepo.create(v1);
-//        List<Word> vocabExercises=new ArrayList<>();
-//        vocabExercises.add(new Word(41, "Hund", "dog"));
-//        vocabExercises.add(new Word(42, "Katze", "cat"));
-//        vocabExercises.add(new Word(43, "Apfel", "apple"));
-//        vocabExercises.add(new Word(44, "Buch", "book"));
-//        vocabExercises.add(new Word(45, "Haus", "house"));
-//        vocabExercises.add(new Word(46, "Auto", "car"));
-//        vocabExercises.add(new Word(47, "Baum", "tree"));
-//        vocabExercises.add(new Word(48, "Blume", "flower"));
-//        vocabExercises.add(new Word(49, "Fisch", "fish"));
-//        vocabExercises.add(new Word(50, "Brot", "bread"));
-//        vocabExercises.add(new Word(51, "Schule", "school"));
-//        v1.setWords(vocabExercises);
-//        vocabRepo.update(v1);
     }
 
     public void updateVocabularyCourse(int courseId, int teacherId, String courseName, Integer maxStudents) {
 
-        Vocabulary v1 = new Vocabulary(courseId, courseName, teacherId, maxStudents);
+        Vocabulary v1 = getVocabularyById(courseId);
+        v1.setTeacher(teacherId);
+        v1.setCourseName(courseName);
+        v1.setAvailableSlots(maxStudents);
         vocabRepo.update(v1);
-//        List<Word> vocabExercises=new ArrayList<>();
-//        vocabExercises.add(new Word(41, "Hund", "dog"));
-//        vocabExercises.add(new Word(42, "Katze", "cat"));
-//        vocabExercises.add(new Word(43, "Apfel", "apple"));
-//        vocabExercises.add(new Word(44, "Buch", "book"));
-//        vocabExercises.add(new Word(45, "Haus", "house"));
-//        vocabExercises.add(new Word(46, "Auto", "car"));
-//        vocabExercises.add(new Word(47, "Baum", "tree"));
-//        vocabExercises.add(new Word(48, "Blume", "flower"));
-//        vocabExercises.add(new Word(49, "Fisch", "fish"));
-//        vocabExercises.add(new Word(50, "Brot", "bread"));
-//        vocabExercises.add(new Word(51, "Schule", "school"));
-//        v1.setWords(vocabExercises);
-//        vocabRepo.update(v1);
+
     }
 
 

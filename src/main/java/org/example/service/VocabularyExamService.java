@@ -10,6 +10,10 @@ import org.example.repo.IRepository;
 public class VocabularyExamService {
     private final IRepository<VocabularyExam> vocabExamRepo;
 
+    private final IRepository<Vocabulary> vocabRepo;
+
+    private final IRepository<Enrolled> enrolledRepo;
+
     private final IRepository<Student> studentRepo;
 
     private final IRepository<Teacher> teacherRepo;
@@ -18,12 +22,14 @@ public class VocabularyExamService {
 
     private final IRepository<ExamResult> examResultRepo;
 
-    public VocabularyExamService(IRepository<VocabularyExam> vocabExamRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Word> wordRepo, IRepository<ExamResult> examResultRepo) {
+    public VocabularyExamService(IRepository<VocabularyExam> vocabExamRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Word> wordRepo, IRepository<ExamResult> examResultRepo, IRepository<Vocabulary> vocabRepo, IRepository<Enrolled> enrolledRepo) {
         this.vocabExamRepo = vocabExamRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
         this.wordRepo = wordRepo;
         this.examResultRepo=examResultRepo;
+        this.vocabRepo=vocabRepo;
+        this.enrolledRepo=enrolledRepo;
     }
 
     public Student getStudentById(int studentId){
@@ -88,12 +94,21 @@ public class VocabularyExamService {
         return results;
     }
 
+    public List<Vocabulary> getVocabCourses(int studentId){
+        idDataCheck(studentId);
+        List<Vocabulary> vocabCourses=new ArrayList<>();
+        for (Vocabulary vocabulary:vocabRepo.getAll())
+            for (Enrolled enrolled:enrolledRepo.getAll())
+                if (vocabulary.getId()==enrolled.getCourse()&&enrolled.getStudent()==studentId)
+                    vocabCourses.add(vocabulary);
+        return vocabCourses;
+    }
 
     public List<Word> takeVocabExam(int studentId, int examId){
         idDataCheck(studentId);
         idDataCheck(examId);
-//        if (getStudentById(studentId).getVocabCourses().isEmpty())
-//            return new ArrayList<>();
+        if (getVocabCourses(studentId).isEmpty())
+            return new ArrayList<>();
         return getExercises(examId);
     }
 
@@ -125,9 +140,6 @@ public class VocabularyExamService {
         ExamResult examResult=new ExamResult(nextId, examId, result, studentId);
         examResultRepo.create(examResult);
 
-//        Student student=getStudentById(studentId);
-//        student.getResults().add(examResult);
-//        studentRepo.update(student);
     }
 
     public List<VocabularyExam> showAllVocabExams(){
@@ -191,59 +203,15 @@ public class VocabularyExamService {
     public void createVocabExam(int examId, int teacherId, String examName){
         VocabularyExam e1=new VocabularyExam(examId,examName,teacherId);
         vocabExamRepo.create(e1);
-
-        int nextId=wordRepo.getAll().size();
-        Word w1=new Word(nextId,"tree","Baum");
-        wordRepo.create(w1);
-        Word w2=new Word(nextId+1,"flower","Blume");
-        wordRepo.create(w2);
-        Word w3=new Word(nextId+2,"house","Haus");
-        wordRepo.create(w3);
-
-        w1.setVocabExamId(examId);
-        w2.setVocabExamId(examId);
-        w3.setVocabExamId(examId);
-        wordRepo.update(w1);
-        wordRepo.update(w2);
-        wordRepo.update(w3);
-//        List<Word> words=new ArrayList<>();
-//        words.add(w1);
-//        words.add(w2);
-//        words.add(w3);
-//        e1.setWords(words);
-
-
-        //vocabExamRepo.update(e1);
     }
 
-    public void updateVocabExam(int examId, int teacherId,String courseName){
+    public void updateVocabExam(int examId, int teacherId, String courseName){
         VocabularyExam exam=getVocabExamById(examId);
 
         exam.setExamName(courseName);
         exam.setTeacher(teacherId);
 
-        int nextId=wordRepo.getAll().size();
-        Word w1=new Word(nextId,"tree","Baum");
-        wordRepo.create(w1);
-        Word w2=new Word(nextId+1,"flower","Blume");
-        wordRepo.create(w2);
-        Word w3=new Word(nextId+2,"house","Haus");
-        wordRepo.create(w3);
-
-        w1.setVocabExamId(examId);
-        w2.setVocabExamId(examId);
-        w3.setVocabExamId(examId);
-        wordRepo.update(w1);
-        wordRepo.update(w2);
-        wordRepo.update(w3);
-
-//        List<Word> words=new ArrayList<>();
-//        words.add(w1);
-//        words.add(w2);
-//        words.add(w3);
-//        exam.setWords(words);
-
-        //vocabExamRepo.update(exam);
+        vocabExamRepo.update(exam);
     }
 
     public List<Student> filterStudentsByBestGradeOnVocabExam(int examId){

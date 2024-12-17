@@ -10,6 +10,10 @@ import org.example.repo.IRepository;
 public class GrammarExamService {
     private final IRepository<GrammarExam> grammarExamRepo;
 
+    private final IRepository<Grammar> grammarRepo;
+
+    private final IRepository<Enrolled> enrolledRepo;
+
     private final IRepository<Student> studentRepo;
 
     private final IRepository<Teacher> teacherRepo;
@@ -18,12 +22,14 @@ public class GrammarExamService {
 
     private final IRepository<ExamResult> examResultRepo;
 
-    public GrammarExamService(IRepository<GrammarExam> grammarExamRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo, IRepository<ExamResult> examResultRepo) {
+    public GrammarExamService(IRepository<GrammarExam> grammarExamRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo, IRepository<ExamResult> examResultRepo, IRepository<Grammar> grammarRepo, IRepository<Enrolled> enrolledRepo) {
         this.grammarExamRepo = grammarExamRepo;
+        this.grammarRepo=grammarRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
         this.questionRepo = questionRepo;
         this.examResultRepo=examResultRepo;
+        this.enrolledRepo=enrolledRepo;
     }
 
     public Student getStudentById(int studentId){
@@ -88,11 +94,21 @@ public class GrammarExamService {
         return results;
     }
 
+    public List<Grammar> getGrammarCourses(int studentId){
+        idDataCheck(studentId);
+        List<Grammar> grammarCourses=new ArrayList<>();
+        for (Grammar grammar:grammarRepo.getAll())
+            for (Enrolled enrolled:enrolledRepo.getAll())
+                if (grammar.getId()==enrolled.getCourse()&&enrolled.getStudent()==studentId)
+                    grammarCourses.add(grammar);
+        return grammarCourses;
+    }
+
     public List<Question> takeGrammarExam(int studentId, int examId){
         idDataCheck(studentId);
         idDataCheck(examId);
-//        if (getStudentById(studentId).getGrammarCourses().isEmpty())
-//            return new ArrayList<>();
+        if (getGrammarCourses(studentId).isEmpty())
+            return new ArrayList<>();
         return getExercises(examId);
     }
 
@@ -189,26 +205,14 @@ public class GrammarExamService {
         GrammarExam e1=new GrammarExam(examId,examName,teacherId);
         grammarExamRepo.create(e1);
 
-        int nextId=questionRepo.getAll().size();
-        Question q1=new Question(nextId,"Du (brauchen) _ Hilfe.","brauchst");
-        questionRepo.create(q1);
-        q1.setGrammarExamId(examId);
-        questionRepo.update(q1);
-
-
     }
 
-    public void updateGrammarExam(int examId, int teacherId,String courseName){
+    public void updateGrammarExam(int examId, int teacherId, String courseName){
         GrammarExam exam=getGrammarExamById(examId);
 
         exam.setExamName(courseName);
         exam.setTeacher(teacherId);
-        int nextId=questionRepo.getAll().size();
-        Question q1=new Question(nextId,"Du (brauchen) _ Hilfe.","brauchst");
-        questionRepo.create(q1);
-        q1.setGrammarId(examId);
-        questionRepo.update(q1);
-
+        grammarExamRepo.update(exam);
     }
 
     //sort students by avg grade on all exams

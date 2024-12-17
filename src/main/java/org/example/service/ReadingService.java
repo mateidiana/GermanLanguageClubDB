@@ -143,7 +143,6 @@ public class ReadingService {
 
     public List<Reading> showEnrolledReadingCourses(int studentId){
         idDataCheck(studentId);
-        Student student=getStudentById(studentId);
         return getReadingCourses(studentId);
     }
 
@@ -151,9 +150,6 @@ public class ReadingService {
         idDataCheck(studentId);
         idDataCheck(courseId);
         int isEnrolled=0;
-        Reading course=getReadingById(courseId);
-        Student student=getStudentById(studentId);
-        List<Question> questions=new ArrayList<>();
 
         for (Reading reading: getReadingCourses(studentId))
             if (reading.getId()==courseId)
@@ -178,21 +174,9 @@ public class ReadingService {
         if (answer.equals(question.getRightAnswer()))
             return "Correct!";
         else{
-//            Student student=getStudentById(studentId);
-//            List<Question> pastMistakes=student.getPastReadingMistakes();
-//            pastMistakes.add(question);
-//            student.setPastReadingMistakes(pastMistakes);
-//            studentRepo.update(student);
             return "Wrong!";
         }
     }
-
-
-//    public List<Question> reviewPastReadingMistakes(int studentId){
-//        idDataCheck(studentId);
-//        Student student= getStudentById(studentId);
-//        return student.getPastReadingMistakes();
-//    }
 
     public List<Reading> getAvailableReadingCourses(){
         return readingRepo.getAll();
@@ -204,7 +188,6 @@ public class ReadingService {
 
     public List<Student> getEnrolledStudents(int courseId) {
         idDataCheck(courseId);
-        Reading course = getReadingById(courseId);
         return getEnrolled(courseId);
     }
 
@@ -252,22 +235,6 @@ public class ReadingService {
     public void createReadingCourse(int courseId, int teacherId, String courseName, Integer maxStudents, int exerciseSet){
         Reading r1=new Reading(courseId,courseName,teacherId,maxStudents);
         readingRepo.create(r1);
-        if(exerciseSet==1)
-        {
-            int nextId=questionRepo.getAll().size();
-            Question q1=new Question(nextId,"Der Diener kann auf alle Fragen des Ich-Erzählers antworten.","falsch");
-            questionRepo.create(q1);
-            q1.setReadingId(courseId);
-            questionRepo.update(q1);
-            //List<Question> questions=new ArrayList<>();
-            //questions.add(q1);
-            //r1.setExercises(questions);
-            r1.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
-
-        }
-        r1.setTextTitle("Der Aufbruch");
-        r1.setTextAuthor("Franz Kafka");
-        readingRepo.update(r1);
     }
 
     public void updateReadingCourse(int courseId, int teacherId,String courseName, Integer maxStudents, int exerciseSet){
@@ -277,21 +244,6 @@ public class ReadingService {
         course.setTeacher(teacherId);
         course.setAvailableSlots(maxStudents);
 
-        if(exerciseSet==1)
-        {
-            int nextId=questionRepo.getAll().size();
-            Question q1=new Question(nextId,"Der Diener kann auf alle Fragen des Ich-Erzählers antworten.","falsch");
-            questionRepo.create(q1);
-            q1.setReadingId(courseId);
-            questionRepo.update(q1);
-
-            //List<Question> questions=new ArrayList<>();
-            //questions.add(q1);
-            //course.setExercises(questions);
-            course.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
-            course.setTextTitle("Der Aufbruch");
-            course.setTextAuthor("Franz Kafka");
-        }
         readingRepo.update(course);
     }
 
@@ -357,28 +309,5 @@ public class ReadingService {
         if (number<1)
             throw new ValidationException("Number cannot be null!");
     }
-
-
-    //in view
-    //int score
-    //read(courseId)
-    //read(studentId)
-    //List<Question> q=practiceReading(studentId, courseId)
-    //if q is empty
-    //System out... "You are not enrolled"
-    //else
-    //for (Question question: q){
-    //String answer
-    //print(question)
-    // read(answer)
-    // System out ....handleAnswer()    -> correct score++    ->>wrong
-    //System out ... score
-    //
-    // }
-
-    //void dataCheck(studentId, courseId)
-    //if studenid<0
-    //raise AttributeError()
-
 
 }
