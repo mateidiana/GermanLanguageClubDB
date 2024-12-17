@@ -72,12 +72,28 @@ public class GrammarExamService {
         throw new EntityNotFoundException("Exam Result not found!");
     }
 
+    public List<Question> getExercises(int examId){
+        List<Question> questions=new ArrayList<>();
+        for (Question q:questionRepo.getAll())
+            if (q.getGrammarExamId()==examId)
+                questions.add(q);
+        return questions;
+    }
+
+    public List<ExamResult> getResults(int studentId){
+        List<ExamResult> results=new ArrayList<>();
+        for (ExamResult result:examResultRepo.getAll())
+            if (result.getStudent()==studentId)
+                results.add(result);
+        return results;
+    }
+
     public List<Question> takeGrammarExam(int studentId, int examId){
         idDataCheck(studentId);
         idDataCheck(examId);
-        if (getStudentById(studentId).getGrammarCourses().isEmpty())
-            return new ArrayList<>();
-        else return getGrammarExamById(examId).getExercises();
+//        if (getStudentById(studentId).getGrammarCourses().isEmpty())
+//            return new ArrayList<>();
+        return getExercises(examId);
     }
 
     public String handleAnswer(int studentId, int questionId, String answer){
@@ -93,7 +109,7 @@ public class GrammarExamService {
 
     public List<ExamResult> showGrammarExamResults(int studentId){
         idDataCheck(studentId);
-        List<ExamResult> allResults=getStudentById(studentId).getResults();
+        List<ExamResult> allResults=getResults(studentId);
         List<ExamResult> allGrammarResults=new ArrayList<>();
         for (ExamResult result:allResults)
             if (getGrammarExamById(result.getExam())!=null)
@@ -108,9 +124,6 @@ public class GrammarExamService {
         ExamResult examResult=new ExamResult(nextId, examId, result, studentId);
         examResultRepo.create(examResult);
 
-        Student student=getStudentById(studentId);
-        student.getResults().add(examResult);
-        studentRepo.update(student);
     }
 
     public List<GrammarExam> showAllGrammarExams(){
@@ -133,7 +146,7 @@ public class GrammarExamService {
         List<ExamResult> allGrammarResults=new ArrayList<>();
         if (getGrammarExamById(examId).getTeacher()==teacherId){
             for (Student student:studentRepo.getAll())
-                for (ExamResult result:student.getResults())
+                for (ExamResult result:getResults(student.getId()))
                     if(result.getExam()==examId)
                         allGrammarResults.add(result);
         }
@@ -181,11 +194,8 @@ public class GrammarExamService {
         questionRepo.create(q1);
         q1.setGrammarExamId(examId);
         questionRepo.update(q1);
-        List<Question> questions=new ArrayList<>();
-        questions.add(q1);
-        e1.setExercises(questions);
 
-        grammarExamRepo.update(e1);
+
     }
 
     public void updateGrammarExam(int examId, int teacherId,String courseName){
@@ -199,11 +209,6 @@ public class GrammarExamService {
         q1.setGrammarId(examId);
         questionRepo.update(q1);
 
-        List<Question> questions=new ArrayList<>();
-        questions.add(q1);
-        exam.setExercises(questions);
-
-        grammarExamRepo.update(exam);
     }
 
     //sort students by avg grade on all exams

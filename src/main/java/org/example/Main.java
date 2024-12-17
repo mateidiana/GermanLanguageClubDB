@@ -139,7 +139,7 @@ public class Main {
         questions.add(question4);
 
 
-        reading1.setExercises(questions);
+        //reading1.setExercises(questions);
         reading1.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
         reading1.setTextAuthor("Franz Kafka");
         reading1.setTextTitle("Der Aufbruch");
@@ -154,7 +154,7 @@ public class Main {
         List<Book> books=new ArrayList<>();
         books.add(book1);
         books.add(book2);
-        reading1.setMandatoryBooks(books);
+        //reading1.setMandatoryBooks(books);
         readingRepo.update(reading1);
 
 

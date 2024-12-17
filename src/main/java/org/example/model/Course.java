@@ -8,7 +8,7 @@ public class Course extends Entity {
     private String courseName;
     //private Teacher teacher;
     private int teacherId;
-    private List<Student> enrolledStudents;
+    //private List<Student> enrolledStudents;
     private Integer availableSlots;
 
 
@@ -17,7 +17,7 @@ public class Course extends Entity {
         this.courseName = courseName;
         this.teacherId = teacherId;
         this.availableSlots = maxStudents;
-        this.enrolledStudents = new ArrayList<>();
+        //this.enrolledStudents = new ArrayList<>();
     }
 
 
@@ -37,13 +37,13 @@ public class Course extends Entity {
         this.teacherId = teacher;
     }
 
-    public List<Student> getEnrolledStudents() {
-        return enrolledStudents;
-    }
-
-    public void setEnrolledStudents(List<Student> enrolledStudents) {
-        this.enrolledStudents = enrolledStudents;
-    }
+//    public List<Student> getEnrolledStudents() {
+//        return enrolledStudents;
+//    }
+//
+//    public void setEnrolledStudents(List<Student> enrolledStudents) {
+//        this.enrolledStudents = enrolledStudents;
+//    }
 
     public Integer getAvailableSlots() {
         return availableSlots;

@@ -5,31 +5,31 @@ import java.util.List;
 
 public class Reading extends Course{
 
-    private List<Book> mandatoryBooks = new ArrayList<>();
+    //private List<Book> mandatoryBooks = new ArrayList<>();
     private String textTitle;
     private String textAuthor;
 
     private String text;
-    private List<Question> exercises=new ArrayList<>();
+    //private List<Question> exercises=new ArrayList<>();
 
     public Reading(int id, String courseName, int teacher, int maxStudents)
     {
         super(id, courseName, teacher, maxStudents);
     }
 
-    public List<Question> getExercises() {
-        return exercises;
-    }
-
-    public void setExercises(List<Question> exercises) {
-        this.exercises=exercises;
-    }
-
-    public List<Book> getMandatoryBooks() {
-        return mandatoryBooks;
-    }
-
-    public void setMandatoryBooks(List<Book> mandatoryBooks) {this.mandatoryBooks=mandatoryBooks;}
+//    public List<Question> getExercises() {
+//        return exercises;
+//    }
+//
+//    public void setExercises(List<Question> exercises) {
+//        this.exercises=exercises;
+//    }
+//
+//    public List<Book> getMandatoryBooks() {
+//        return mandatoryBooks;
+//    }
+//
+//    public void setMandatoryBooks(List<Book> mandatoryBooks) {this.mandatoryBooks=mandatoryBooks;}
 
     public String getTextTitle(){return textTitle;}
     public void setTextTitle(String textTitle){this.textTitle=textTitle;}

@@ -68,6 +68,52 @@ public class ReadingService {
         throw new EntityNotFoundException("Question not found!");
     }
 
+    public Book getBookById(int bookId){
+        idDataCheck(bookId);
+        for (Book book:bookRepo.getAll())
+            if (book.getId()==bookId)
+                return book;
+        throw new EntityNotFoundException("Book not found!");
+    }
+
+    public List<Student> getEnrolled(int courseId){
+        List<Student> enrolled=new ArrayList<>();
+        idDataCheck(courseId);
+        for(Enrolled enrollment:enrolledRepo.getAll())
+            if(enrollment.getCourse()==courseId)
+                enrolled.add(getStudentById(enrollment.getStudent()));
+        return enrolled;
+
+    }
+
+    public List<Reading> getReadingCourses(int studentId){
+        idDataCheck(studentId);
+        List<Reading> readingCourses=new ArrayList<>();
+        for (Reading reading:readingRepo.getAll())
+            for (Enrolled enrolled:enrolledRepo.getAll())
+                if (reading.getId()==enrolled.getCourse()&&enrolled.getStudent()==studentId)
+                    readingCourses.add(reading);
+        return readingCourses;
+    }
+
+    public List<Question> getExercises(int courseId){
+        idDataCheck(courseId);
+        List<Question> questions=new ArrayList<>();
+        for (Question q:questionRepo.getAll())
+            if (q.getReadingId()==courseId)
+                questions.add(q);
+        return questions;
+    }
+
+    public List<Book> getMandatoryBooks(int courseId){
+        idDataCheck(courseId);
+        List<Book> books=new ArrayList<>();
+        for (BookBelongsToCourse belongs:bookBelongsRepo.getAll())
+            if (belongs.getReading()==courseId)
+                books.add(getBookById(belongs.getId()));
+        return books;
+    }
+
     public void enroll(int studentId, int readingCourseId) {
         idDataCheck(studentId);
         idDataCheck(readingCourseId);
@@ -76,23 +122,16 @@ public class ReadingService {
         Student student = getStudentById(studentId);
         Reading course = getReadingById(readingCourseId);
 
-        for (Reading reading:student.getReadingCourses()){
+        for (Reading reading:getReadingCourses(studentId)){
             if (reading.getId()==readingCourseId)
             {
                 alreadyEnrolled=1;
                 break;
             }
-
         }
-
         if (alreadyEnrolled==0){
-            studentRepo.delete(studentId);
-            readingRepo.delete(readingCourseId);
-            if (course.getAvailableSlots() > course.getEnrolledStudents().size()) {
-                course.getEnrolledStudents().add(student);
-                student.getReadingCourses().add(course);
-                readingRepo.create(course);
-                studentRepo.create(student);
+
+            if (course.getAvailableSlots() > getEnrolled(readingCourseId).size()) {
 
                 int nextId=enrolledRepo.getAll().size();
                 Enrolled enrolled=new Enrolled(nextId,studentId,readingCourseId);
@@ -105,7 +144,7 @@ public class ReadingService {
     public List<Reading> showEnrolledReadingCourses(int studentId){
         idDataCheck(studentId);
         Student student=getStudentById(studentId);
-        return student.getReadingCourses();
+        return getReadingCourses(studentId);
     }
 
     public List<Question> practiceReading(int studentId, int courseId){
@@ -116,7 +155,7 @@ public class ReadingService {
         Student student=getStudentById(studentId);
         List<Question> questions=new ArrayList<>();
 
-        for (Reading reading: student.getReadingCourses())
+        for (Reading reading: getReadingCourses(studentId))
             if (reading.getId()==courseId)
             {
                 isEnrolled=1;
@@ -125,7 +164,7 @@ public class ReadingService {
         if (isEnrolled==0)
             return new ArrayList<>();
         else{
-            return course.getExercises();
+            return getExercises(courseId);
         }
     }
 
@@ -166,13 +205,13 @@ public class ReadingService {
     public List<Student> getEnrolledStudents(int courseId) {
         idDataCheck(courseId);
         Reading course = getReadingById(courseId);
-        return course.getEnrolledStudents();
+        return getEnrolled(courseId);
     }
 
     public List<Student> showStudentsEnrolledInReadingCourses(){
         List<Student> studentList=new ArrayList<>();
         for(Student student:studentRepo.getAll())
-            if (!student.getReadingCourses().isEmpty())
+            if (!getReadingCourses(student.getId()).isEmpty())
                 studentList.add(student);
         return studentList;
 
@@ -220,9 +259,9 @@ public class ReadingService {
             questionRepo.create(q1);
             q1.setReadingId(courseId);
             questionRepo.update(q1);
-            List<Question> questions=new ArrayList<>();
-            questions.add(q1);
-            r1.setExercises(questions);
+            //List<Question> questions=new ArrayList<>();
+            //questions.add(q1);
+            //r1.setExercises(questions);
             r1.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
 
         }
@@ -246,9 +285,9 @@ public class ReadingService {
             q1.setReadingId(courseId);
             questionRepo.update(q1);
 
-            List<Question> questions=new ArrayList<>();
-            questions.add(q1);
-            course.setExercises(questions);
+            //List<Question> questions=new ArrayList<>();
+            //questions.add(q1);
+            //course.setExercises(questions);
             course.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
             course.setTextTitle("Der Aufbruch");
             course.setTextAuthor("Franz Kafka");
@@ -270,9 +309,9 @@ public class ReadingService {
         idDataCheck(courseId);
         idDataCheck(studentId);
 
-        for (Reading course:getStudentById(studentId).getReadingCourses())
+        for (Reading course:getReadingCourses(studentId))
             if (course.getId()==courseId)
-                return course.getMandatoryBooks();
+                return getMandatoryBooks(courseId);
         return new ArrayList<>();
 
     }
@@ -290,8 +329,6 @@ public class ReadingService {
 
         if(course.getTeacher()==teacherId)
         {
-            course.getMandatoryBooks().add(book);
-            readingRepo.update(course);
 
             int nextIdBook=bookBelongsRepo.getAll().size();
             BookBelongsToCourse bookBelongsToCourse=new BookBelongsToCourse(nextIdBook,courseId,nextId);

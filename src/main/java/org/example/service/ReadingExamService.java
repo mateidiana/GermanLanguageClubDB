@@ -71,12 +71,29 @@ public class ReadingExamService {
         throw new EntityNotFoundException("Exam Result not found!");
     }
 
+    public List<Question> getExercises(int examId){
+        List<Question> questions=new ArrayList<>();
+        for (Question q:questionRepo.getAll())
+            if (q.getReadingExamId()==examId)
+                questions.add(q);
+        return questions;
+    }
+
+    public List<ExamResult> getResults(int studentId){
+        List<ExamResult> results=new ArrayList<>();
+        for (ExamResult result:examResultRepo.getAll())
+            if (result.getStudent()==studentId)
+                results.add(result);
+        return results;
+    }
+
     public List<Question> takeReadingExam(int studentId, int examId){
         idDataCheck(studentId);
         idDataCheck(examId);
-        if (getStudentById(studentId).getReadingCourses().isEmpty())
-            return new ArrayList<>();
-        else return getReadingExamById(examId).getExercises();
+//        if (getStudentById(studentId).getReadingCourses().isEmpty())
+//            return new ArrayList<>();
+        //return getReadingExamById(examId).getExercises();
+        return getExercises(examId);
     }
 
     public String handleAnswer(int studentId, int questionId, String answer){
@@ -93,7 +110,7 @@ public class ReadingExamService {
 
     public List<ExamResult> showReadingExamResults(int studentId){
         idDataCheck(studentId);
-        List<ExamResult> allResults=getStudentById(studentId).getResults();
+        List<ExamResult> allResults=getResults(studentId);
         List<ExamResult> allReadingResults=new ArrayList<>();
         for (ExamResult result:allResults)
             if (getReadingExamById(result.getExam())!=null)
@@ -108,9 +125,9 @@ public class ReadingExamService {
         ExamResult examResult=new ExamResult(nextId, examId, result, studentId);
         examResultRepo.create(examResult);
 
-        Student student=getStudentById(studentId);
-        student.getResults().add(examResult);
-        studentRepo.update(student);
+//        Student student=getStudentById(studentId);
+//        student.getResults().add(examResult);
+//        studentRepo.update(student);
     }
 
     public List<ReadingExam> showAllReadingExams(){
@@ -133,7 +150,7 @@ public class ReadingExamService {
         List<ExamResult> allReadingResults=new ArrayList<>();
         if (getReadingExamById(examId).getTeacher()==teacherId){
             for (Student student:studentRepo.getAll())
-                for (ExamResult result:student.getResults())
+                for (ExamResult result:getResults(student.getId()))
                     if(result.getExam()==examId)
                         allReadingResults.add(result);
         }
@@ -180,9 +197,9 @@ public class ReadingExamService {
         questionRepo.create(q1);
         q1.setReadingExamId(examId);
         questionRepo.update(q1);
-        List<Question> questions=new ArrayList<>();
-        questions.add(q1);
-        e1.setExercises(questions);
+        //List<Question> questions=new ArrayList<>();
+        //questions.add(q1);
+        //e1.setExercises(questions);
         e1.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
 
 
@@ -203,9 +220,9 @@ public class ReadingExamService {
         q1.setReadingId(examId);
         questionRepo.update(q1);
 
-        List<Question> questions=new ArrayList<>();
-        questions.add(q1);
-        exam.setExercises(questions);
+        //List<Question> questions=new ArrayList<>();
+        //questions.add(q1);
+        //exam.setExercises(questions);
         exam.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
         exam.setTextTitle("Der Aufbruch");
         exam.setTextAuthor("Franz Kafka");
@@ -218,7 +235,7 @@ public class ReadingExamService {
         idDataCheck(examId);
         List<Student> filteredStud=new ArrayList<>();
         for (Student stud:studentRepo.getAll())
-            for (ExamResult result:stud.getResults())
+            for (ExamResult result:getResults(stud.getId()))
                 if (result.getExam()==examId)
                     if (result.getResult()>=5.0)
                         filteredStud.add(stud);

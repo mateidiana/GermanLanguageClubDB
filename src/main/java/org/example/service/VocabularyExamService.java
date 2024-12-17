@@ -72,12 +72,29 @@ public class VocabularyExamService {
         throw new EntityNotFoundException("Exam Result not found!");
     }
 
+    public List<Word> getExercises(int examId){
+        List<Word> questions=new ArrayList<>();
+        for (Word q:wordRepo.getAll())
+            if (q.getVocabExamId()==examId)
+                questions.add(q);
+        return questions;
+    }
+
+    public List<ExamResult> getResults(int studentId){
+        List<ExamResult> results=new ArrayList<>();
+        for (ExamResult result:examResultRepo.getAll())
+            if (result.getStudent()==studentId)
+                results.add(result);
+        return results;
+    }
+
+
     public List<Word> takeVocabExam(int studentId, int examId){
         idDataCheck(studentId);
         idDataCheck(examId);
-        if (getStudentById(studentId).getVocabCourses().isEmpty())
-            return new ArrayList<>();
-        else return getVocabExamById(examId).getWords();
+//        if (getStudentById(studentId).getVocabCourses().isEmpty())
+//            return new ArrayList<>();
+        return getExercises(examId);
     }
 
     public String handleAnswer(int studentId, int wordId, String answer){
@@ -93,7 +110,7 @@ public class VocabularyExamService {
 
     public List<ExamResult> showVocabExamResults(int studentId){
         idDataCheck(studentId);
-        List<ExamResult> allResults=getStudentById(studentId).getResults();
+        List<ExamResult> allResults=getResults(studentId);
         List<ExamResult> allVocabResults=new ArrayList<>();
         for (ExamResult result:allResults)
             if (getVocabExamById(result.getExam())!=null)
@@ -108,9 +125,9 @@ public class VocabularyExamService {
         ExamResult examResult=new ExamResult(nextId, examId, result, studentId);
         examResultRepo.create(examResult);
 
-        Student student=getStudentById(studentId);
-        student.getResults().add(examResult);
-        studentRepo.update(student);
+//        Student student=getStudentById(studentId);
+//        student.getResults().add(examResult);
+//        studentRepo.update(student);
     }
 
     public List<VocabularyExam> showAllVocabExams(){
@@ -133,7 +150,7 @@ public class VocabularyExamService {
         List<ExamResult> allVocabResults=new ArrayList<>();
         if (getVocabExamById(examId).getTeacher()==teacherId){
             for (Student student:studentRepo.getAll())
-                for (ExamResult result:student.getResults())
+                for (ExamResult result:getResults(student.getId()))
                     if(result.getExam()==examId)
                         allVocabResults.add(result);
         }
@@ -189,14 +206,14 @@ public class VocabularyExamService {
         wordRepo.update(w1);
         wordRepo.update(w2);
         wordRepo.update(w3);
-        List<Word> words=new ArrayList<>();
-        words.add(w1);
-        words.add(w2);
-        words.add(w3);
-        e1.setWords(words);
+//        List<Word> words=new ArrayList<>();
+//        words.add(w1);
+//        words.add(w2);
+//        words.add(w3);
+//        e1.setWords(words);
 
 
-        vocabExamRepo.update(e1);
+        //vocabExamRepo.update(e1);
     }
 
     public void updateVocabExam(int examId, int teacherId,String courseName){
@@ -220,20 +237,20 @@ public class VocabularyExamService {
         wordRepo.update(w2);
         wordRepo.update(w3);
 
-        List<Word> words=new ArrayList<>();
-        words.add(w1);
-        words.add(w2);
-        words.add(w3);
-        exam.setWords(words);
+//        List<Word> words=new ArrayList<>();
+//        words.add(w1);
+//        words.add(w2);
+//        words.add(w3);
+//        exam.setWords(words);
 
-        vocabExamRepo.update(exam);
+        //vocabExamRepo.update(exam);
     }
 
     public List<Student> filterStudentsByBestGradeOnVocabExam(int examId){
         idDataCheck(examId);
         List<Student> filteredStud=new ArrayList<>();
         for (Student stud:studentRepo.getAll())
-            for (ExamResult result:stud.getResults())
+            for (ExamResult result:getResults(stud.getId()))
                 if (result.getExam()==examId)
                     if (result.getResult()==10.0)
                         filteredStud.add(stud);

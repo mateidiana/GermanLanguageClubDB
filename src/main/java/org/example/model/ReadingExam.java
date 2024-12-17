@@ -6,7 +6,7 @@ import java.util.List;
 public class ReadingExam extends Exam{
     private String textTitle;
     private String textAuthor;
-    private List<Question> exercises=new ArrayList<>();
+    //private List<Question> exercises=new ArrayList<>();
     private String text;
     public ReadingExam(int id, String name, int teacher)
     {
@@ -18,13 +18,13 @@ public class ReadingExam extends Exam{
     public String getTextAuthor(){return textAuthor;}
     public void setTextAuthor(String textAuthor){this.textAuthor=textAuthor;}
 
-    public List<Question> getExercises() {
-        return exercises;
-    }
-
-    public void setExercises(List<Question> exercises) {
-        this.exercises=exercises;
-    }
+//    public List<Question> getExercises() {
+//        return exercises;
+//    }
+//
+//    public void setExercises(List<Question> exercises) {
+//        this.exercises=exercises;
+//    }
 
     public String getText(){return text;}
     public void setText(String text){this.text=text;}

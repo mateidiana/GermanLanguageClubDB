@@ -64,6 +64,34 @@ public class GrammarService {
         throw new EntityNotFoundException("Question not found!");
     }
 
+    public List<Student> getEnrolled(int courseId){
+        List<Student> enrolled=new ArrayList<>();
+        idDataCheck(courseId);
+        for(Enrolled enrollment:enrolledRepo.getAll())
+            if(enrollment.getCourse()==courseId)
+                enrolled.add(getStudentById(enrollment.getStudent()));
+        return enrolled;
+
+    }
+
+    public List<Grammar> getGrammarCourses(int studentId){
+        idDataCheck(studentId);
+        List<Grammar> grammarCourses=new ArrayList<>();
+        for (Grammar grammar:grammarRepo.getAll())
+            for (Enrolled enrolled:enrolledRepo.getAll())
+                if (grammar.getId()==enrolled.getCourse()&&enrolled.getStudent()==studentId)
+                    grammarCourses.add(grammar);
+        return grammarCourses;
+    }
+
+    public List<Question> getExercises(int courseId){
+        List<Question> questions=new ArrayList<>();
+        for (Question q:questionRepo.getAll())
+            if (q.getGrammarId()==courseId)
+                questions.add(q);
+        return questions;
+    }
+
 
     public void enroll(int studentId, int grammarCourseId) {
         idDataCheck(studentId);
@@ -73,20 +101,13 @@ public class GrammarService {
         Student student = getStudentById(studentId);
         Grammar course = getGrammarById(grammarCourseId);
 
-        for (Course course1:student.getGrammarCourses()){
+        for (Course course1:getGrammarCourses(studentId)){
             if (course1.getId()==grammarCourseId)
                 alreadyEnrolled=1;
         }
 
         if (alreadyEnrolled==0){
-            studentRepo.delete(studentId);
-            grammarRepo.delete(grammarCourseId);
-            if (course.getAvailableSlots() > course.getEnrolledStudents().size()) {
-                course.getEnrolledStudents().add(student);
-                student.getGrammarCourses().add(course);
-                grammarRepo.create(course);
-                studentRepo.create(student);
-
+            if (course.getAvailableSlots() > getEnrolled(grammarCourseId).size()) {
                 int nextId=enrolledRepo.getAll().size();
                 Enrolled enrolled=new Enrolled(nextId,studentId,grammarCourseId);
                 enrolledRepo.create(enrolled);
@@ -98,7 +119,7 @@ public class GrammarService {
     public List<Grammar> showEnrolledGrammarCourses(int studentId){
         idDataCheck(studentId);
         Student student=getStudentById(studentId);
-        return student.getGrammarCourses();
+        return getGrammarCourses(studentId);
     }
 
     public List<Question> practiceGrammar(int studentId, int courseId) {
@@ -110,7 +131,7 @@ public class GrammarService {
         List<Question> questions=new ArrayList<>();
 
         int foundCourse=0;
-        for (Course findCourse : student.getGrammarCourses()){
+        for (Course findCourse : getGrammarCourses(studentId)){
             if (findCourse.getId()==courseId) {
                 foundCourse=1;
                 break;
@@ -119,7 +140,7 @@ public class GrammarService {
         if (foundCourse==0){
             return new ArrayList<>();
             }
-            return course.getExercises();
+            return getExercises(courseId);
     }
 
     public String handleAnswer(int studentId, int questionId, String answer){
@@ -159,13 +180,13 @@ public class GrammarService {
     public List<Student> getEnrolledStudents(int courseId) {
         idDataCheck(courseId);
         Grammar course = getGrammarById(courseId);
-        return course.getEnrolledStudents();
+        return getEnrolled(courseId);
     }
 
     public List<Student> showStudentsEnrolledInGrammarCourses(){
         List<Student> studentList=new ArrayList<>();
         for(Student student:studentRepo.getAll())
-            if (!student.getGrammarCourses().isEmpty())
+            if (!getGrammarCourses(student.getId()).isEmpty())
                 studentList.add(student);
         return studentList;
     }
@@ -206,42 +227,39 @@ public class GrammarService {
 
         Grammar g1 = new Grammar(courseId, courseName, teacherId, maxStudents);
         grammarRepo.create(g1);
-        List<Question> grammarExercises=new ArrayList<>();
-        grammarExercises.add(new Question(21, "Du (brauchen) _ Hilfe.", "brauchst"));
-        grammarExercises.add(new Question(22, "Ich bin _ Hause.", "zu"));
-        grammarExercises.add(new Question(23, "Er trägt _.", "bei"));
-        grammarExercises.add(new Question(24, "Diana (setzen)_ sich auf das Sofa.", "setzt"));
-        grammarExercises.add(new Question(25, "Stefi klettert auf _ Baum.", "den"));
-        grammarExercises.add(new Question(26, "Ich (besuchen) _ diese Kirche.", "besuche"));
-        grammarExercises.add(new Question(27, "Wir spielen DOTA in _ Klasse.", "der"));
-        grammarExercises.add(new Question(28, "Mama kocht immer (lecker)_ Essen", "leckeres"));
-        grammarExercises.add(new Question(29, "Der Ball ist unter _ Tisch gerollt.", "den"));
-        grammarExercises.add(new Question(30, "Mein Mann kommt immer betrunken _ Hause.", "nach"));
-        g1.setExercises(grammarExercises);
-        grammarRepo.update(g1);
+//        List<Question> grammarExercises=new ArrayList<>();
+//        grammarExercises.add(new Question(21, "Du (brauchen) _ Hilfe.", "brauchst"));
+//        grammarExercises.add(new Question(22, "Ich bin _ Hause.", "zu"));
+//        grammarExercises.add(new Question(23, "Er trägt _.", "bei"));
+//        grammarExercises.add(new Question(24, "Diana (setzen)_ sich auf das Sofa.", "setzt"));
+//        grammarExercises.add(new Question(25, "Stefi klettert auf _ Baum.", "den"));
+//        grammarExercises.add(new Question(26, "Ich (besuchen) _ diese Kirche.", "besuche"));
+//        grammarExercises.add(new Question(27, "Wir spielen DOTA in _ Klasse.", "der"));
+//        grammarExercises.add(new Question(28, "Mama kocht immer (lecker)_ Essen", "leckeres"));
+//        grammarExercises.add(new Question(29, "Der Ball ist unter _ Tisch gerollt.", "den"));
+//        grammarExercises.add(new Question(30, "Mein Mann kommt immer betrunken _ Hause.", "nach"));
+
+
     }
 
     public void updateGrammarCourse(int courseId, int teacherId, String courseName, Integer maxStudents) {
 
         Grammar course = getGrammarById(courseId);
         Teacher teacher = getTeacherById(teacherId);
-        grammarRepo.delete(courseId);
         Grammar g1 = new Grammar(courseId, courseName, teacherId, maxStudents);
         grammarRepo.create(g1);
-        List<Question> grammarExercises=new ArrayList<>();
-        grammarExercises.add(new Question(21, "Du (brauchen) _ Hilfe.", "brauchst"));
-        grammarExercises.add(new Question(22, "Ich bin _ Hause.", "zu"));
-        grammarExercises.add(new Question(23, "Er trägt _.", "bei"));
-        grammarExercises.add(new Question(24, "Diana (setzen)_ sich auf das Sofa.", "setzt"));
-        grammarExercises.add(new Question(25, "Stefi klettert auf _ Baum.", "den"));
-        grammarExercises.add(new Question(26, "Ich (besuchen) _ diese Kirche.", "besuche"));
-        grammarExercises.add(new Question(27, "Wir spielen DOTA in _ Klasse.", "der"));
-        grammarExercises.add(new Question(28, "Mama kocht immer (lecker)_ Essen", "leckeres"));
-        grammarExercises.add(new Question(29, "Der Ball ist unter _ Tisch gerollt.", "den"));
-        grammarExercises.add(new Question(30, "Mein Mann kommt immer betrunken _ Hause.", "nach"));
-        g1.setExercises(grammarExercises);
-        g1.setExercises(grammarExercises);
-        grammarRepo.update(g1);
+//        List<Question> grammarExercises=new ArrayList<>();
+//        grammarExercises.add(new Question(21, "Du (brauchen) _ Hilfe.", "brauchst"));
+//        grammarExercises.add(new Question(22, "Ich bin _ Hause.", "zu"));
+//        grammarExercises.add(new Question(23, "Er trägt _.", "bei"));
+//        grammarExercises.add(new Question(24, "Diana (setzen)_ sich auf das Sofa.", "setzt"));
+//        grammarExercises.add(new Question(25, "Stefi klettert auf _ Baum.", "den"));
+//        grammarExercises.add(new Question(26, "Ich (besuchen) _ diese Kirche.", "besuche"));
+//        grammarExercises.add(new Question(27, "Wir spielen DOTA in _ Klasse.", "der"));
+//        grammarExercises.add(new Question(28, "Mama kocht immer (lecker)_ Essen", "leckeres"));
+//        grammarExercises.add(new Question(29, "Der Ball ist unter _ Tisch gerollt.", "den"));
+//        grammarExercises.add(new Question(30, "Mein Mann kommt immer betrunken _ Hause.", "nach"));
+
     }
 
     public List<Grammar> viewGrammarCoursesTaughtByTeacher(int teacherId){
