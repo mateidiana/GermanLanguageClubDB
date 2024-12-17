@@ -263,7 +263,7 @@ public class StudentView {
         boolean continueLoop = true;
 
         while (continueLoop) {
-            System.out.print("Select an option:\n\n1. View your vocabulary courses\n2. Practice vocabulary\n3. Review past mistakes\n4. Take vocabulary exam\n5. View past exam scores\n6. Sort courses by available slots\n0. Exit\n");
+            System.out.print("Select an option:\n\n1. View your vocabulary courses\n2. Practice vocabulary\n3. Review past mistakes\n4. Take vocabulary exam\n5. View past exam scores\n0. Exit\n");
 
             String option = scanner.nextLine();
 
@@ -286,8 +286,7 @@ public class StudentView {
                 case "5":
                     //examController.showVocabResults(readStudentId(scanner));
                     break;
-                case "6":
-                    //vocabController.sortByAvailableSlotsVocab();
+
                 default:
             }
         }

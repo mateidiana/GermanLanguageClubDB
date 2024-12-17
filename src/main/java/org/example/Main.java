@@ -62,6 +62,8 @@ public class Main {
         IRepository<Word> wordRepo=new InMemoryRepository<>();
         IRepository<Book> bookRepo=new InMemoryRepository<>();
 
+        //To do insert data in repos
+
 
         StudentService studentService=new StudentService(studentRepo);
         TeacherService teacherService=new TeacherService(teacherRepo);
