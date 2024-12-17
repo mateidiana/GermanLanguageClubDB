@@ -3,9 +3,7 @@ import java.util.Scanner;
 import java.util.stream.IntStream;
 import org.example.controller.*;
 
-/**
- * Displays teacher functionalities
- */
+
 public class TeacherView {
     private TeacherController teacherController;
     private ReadingController readingController;
@@ -21,9 +19,7 @@ public class TeacherView {
         this.examController=examController;
     }
 
-    /**
-     * Based on options, a teacher can access functionalities for manipulating all courses, exams and results
-     */
+
     public void start(){
         Scanner scanner = new Scanner(System.in);
         boolean continueLoop = true;
@@ -54,9 +50,7 @@ public class TeacherView {
         }
     }
 
-    /**
-     * Menu for manipulating reading courses
-     */
+
     public void readingMenu(){
         Scanner scanner=new Scanner(System.in);
         boolean continueLoop = true;
@@ -102,9 +96,7 @@ public class TeacherView {
     }
 
 
-    /**
-     * Menu for manipulating grammar courses
-     */
+
     public void grammarMenu(){
         Scanner scanner=new Scanner(System.in);
         boolean continueLoop = true;
@@ -146,9 +138,7 @@ public class TeacherView {
         }
     }
 
-    /**
-     * Menu for manipulating vocabulary courses
-     */
+
     public void vocabularyMenu(){
         Scanner scanner=new Scanner(System.in);
         boolean continueLoop = true;
@@ -190,11 +180,7 @@ public class TeacherView {
         }
     }
 
-    /**
-     * Read inputs
-     * @param scanner reads inputs
-     * @return int or strings
-     */
+
     private static int readTeacherId(Scanner scanner) {
         System.out.println("Enter teacher ID: ");
         return Integer.parseInt(scanner.nextLine());

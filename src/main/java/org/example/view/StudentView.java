@@ -309,12 +309,13 @@ public class StudentView {
                 else{
                     for (Reading course:readingCourses)
                         System.out.println(course);
+
+                    int studentId=readStudentId(scanner);
+                    int courseId=readCourseId(scanner);
+                    try{
+                        readingController.enroll(studentId,courseId);
+                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
                 }
-                int studentId=readStudentId(scanner);
-                int courseId=readCourseId(scanner);
-                try{
-                    readingController.enroll(studentId,courseId);
-                } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
 
                 break;
             case "2":
