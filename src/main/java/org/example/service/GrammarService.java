@@ -108,7 +108,11 @@ public class GrammarService {
 
         if (alreadyEnrolled==0){
             if (course.getAvailableSlots() > getEnrolled(grammarCourseId).size()) {
+
                 int nextId=enrolledRepo.getAll().size();
+                if (nextId==0)
+                    nextId=1;
+                else nextId+=1;
                 Enrolled enrolled=new Enrolled(nextId,studentId,grammarCourseId);
                 enrolledRepo.create(enrolled);
             }

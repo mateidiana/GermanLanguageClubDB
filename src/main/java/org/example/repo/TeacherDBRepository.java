@@ -16,7 +16,7 @@ public class TeacherDBRepository extends DBRepository<Teacher> {
 
     @Override
     public void create(Teacher obj){
-        String sql = "INSERT INTO TEACHER (ID, NAME)" +
+        String sql = "INSERT INTO TEACHER (TEACHER_ID, NAME)" +
                 " VALUES(?, ?)";
 
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -31,7 +31,7 @@ public class TeacherDBRepository extends DBRepository<Teacher> {
     @Override
     public Teacher read(int id){
 
-        String sql = "SELECT * FROM DRIVERS WHERE ID = ?";
+        String sql = "SELECT * FROM TEACHER WHERE TEACHER_ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -47,7 +47,7 @@ public class TeacherDBRepository extends DBRepository<Teacher> {
 
     @Override
     public void update(Teacher obj){
-        String sql  = "UPDATE STUDENT SET name = ? WHERE ID = ?";
+        String sql  = "UPDATE TEACHER SET name = ? WHERE TEACHER_ID = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setString(1, obj.getName());
@@ -61,7 +61,7 @@ public class TeacherDBRepository extends DBRepository<Teacher> {
 
     @Override
     public void delete(int id){
-        String sql = "DELETE FROM STUDENT WHERE ID = ?";
+        String sql = "DELETE FROM TEACHER WHERE TEACHER_ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, id);
             statement.execute();
@@ -72,7 +72,7 @@ public class TeacherDBRepository extends DBRepository<Teacher> {
 
     @Override
     public List<Teacher> getAll(){
-        String sql = "SELECT * FROM STUDENT";
+        String sql = "SELECT * FROM TEACHER";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             List<Teacher> students = new ArrayList<>();

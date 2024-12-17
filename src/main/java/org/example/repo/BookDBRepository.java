@@ -16,7 +16,7 @@ public class BookDBRepository extends DBRepository<Book> {
 
     @Override
     public void create(Book obj) {
-        String sql = "INSERT INTO BOOK(id, name, " +
+        String sql = "INSERT INTO BOOK(id, title, " +
                 " author) VALUES(?, ?, ?)";
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, obj.getId());

@@ -17,10 +17,13 @@ public class ReadingExamDBRepository extends DBRepository<ReadingExam> {
     @Override
     public void create(ReadingExam obj) {
         String sql = "INSERT INTO READINGEXAM(id, name, text, author, title, " +
-                " teacher_id) VALUES(?, ?, NULL, NULL, NULL, ?)";
+                " teacher_id) VALUES(?, ?, ?, ?, ?, ?)";
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, obj.getId());
             statement.setString(2, obj.getExamName());
+            statement.setString(3, obj.getText());
+            statement.setString(4, obj.getTextAuthor());
+            statement.setString(5,obj. getTextTitle());
             statement.setInt(6, obj.getTeacher());
             statement.execute();
         } catch (SQLException ex) {
@@ -30,7 +33,7 @@ public class ReadingExamDBRepository extends DBRepository<ReadingExam> {
 
     @Override
     public ReadingExam read(int id) {
-        String sql = "SELECT * FROM READING WHERE id = ?";
+        String sql = "SELECT * FROM READINGEXAM WHERE id = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -49,7 +52,7 @@ public class ReadingExamDBRepository extends DBRepository<ReadingExam> {
     @Override
     public void update(ReadingExam obj) {
         String sql = "UPDATE READINGEXAM SET name = ?, text = ?, title = ?, author = ?,"
-                + " teacher_id = ?, max_students= ? WHERE ID = ?";
+                + " teacher_id = ? WHERE ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(2, obj.getExamName());
             statement.setString(3, obj.getText());

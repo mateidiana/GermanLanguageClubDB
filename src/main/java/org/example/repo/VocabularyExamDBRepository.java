@@ -16,7 +16,7 @@ public class VocabularyExamDBRepository extends DBRepository<VocabularyExam> {
 
     @Override
     public void create(VocabularyExam obj) {
-        String sql = "INSERT INTO VOCABULARYEXAM(id, name, " +
+        String sql = "INSERT INTO vocabexam(id, name, " +
                 " teacher_id) VALUES(?, ?, ?)";
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, obj.getId());
@@ -30,7 +30,7 @@ public class VocabularyExamDBRepository extends DBRepository<VocabularyExam> {
 
     @Override
     public VocabularyExam read(int id) {
-        String sql = "SELECT * FROM VOCABULARYEXAM WHERE id = ?";
+        String sql = "SELECT * FROM vocabexam WHERE id = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -48,7 +48,7 @@ public class VocabularyExamDBRepository extends DBRepository<VocabularyExam> {
 
     @Override
     public void update(VocabularyExam obj) {
-        String sql = "UPDATE VOCABULARYEXAM SET name = ?, "
+        String sql = "UPDATE vocabexam SET name = ?, "
                 + " teacher_id = ? WHERE ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, obj.getExamName());
@@ -63,7 +63,7 @@ public class VocabularyExamDBRepository extends DBRepository<VocabularyExam> {
 
     @Override
     public void delete(int id){
-        String sql = "DELETE FROM VOCABULARYEXAM WHERE id = ?";
+        String sql = "DELETE FROM vocabexam WHERE id = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.execute();
@@ -74,7 +74,7 @@ public class VocabularyExamDBRepository extends DBRepository<VocabularyExam> {
 
     @Override
     public List<VocabularyExam> getAll(){
-        String sql = "SELECT * FROM VOCABULARYEXAM";
+        String sql = "SELECT * FROM vocabexam";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             List<VocabularyExam> vocabcourses = new ArrayList<>();

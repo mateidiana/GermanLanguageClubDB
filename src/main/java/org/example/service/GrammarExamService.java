@@ -136,7 +136,7 @@ public class GrammarExamService {
     public void addResult(int studentId, int examId, Float result){
         idDataCheck(studentId);
         idDataCheck(examId);
-        int nextId=examResultRepo.getAll().size();
+        int nextId=examResultRepo.getAll().size()+1;
         ExamResult examResult=new ExamResult(nextId, examId, result, studentId);
         examResultRepo.create(examResult);
 

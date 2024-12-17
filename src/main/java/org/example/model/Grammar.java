@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Grammar extends Course {
 
-    public Grammar(int id, String courseName, int teacher, Integer maxStudents)
+    public Grammar(int id, String courseName, int teacher, int maxStudents)
     {
         super(id, courseName, teacher, maxStudents);
     }

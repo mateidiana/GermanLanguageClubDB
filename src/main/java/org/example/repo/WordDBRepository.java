@@ -16,8 +16,8 @@ public class WordDBRepository extends DBRepository<Word> {
 
     @Override
     public void create(Word obj) {
-        String sql = "INSERT INTO WORD(id, , " +
-                " author) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO WORD(id, word, meaning, vocabulary_id, vocabulary_exam_id)" +
+                " VALUES(?, ?, ?, ?, ?)";
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, obj.getId());
             statement.setString(2, obj.getWord());

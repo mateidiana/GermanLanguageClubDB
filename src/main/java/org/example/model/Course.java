@@ -9,10 +9,10 @@ public class Course extends Entity {
 
     private int teacherId;
 
-    private Integer availableSlots;
+    private int availableSlots;
 
 
-    public Course(int id, String courseName, int teacherId, Integer maxStudents) {
+    public Course(int id, String courseName, int teacherId, int maxStudents) {
         super(id);
         this.courseName = courseName;
         this.teacherId = teacherId;
@@ -36,11 +36,11 @@ public class Course extends Entity {
         this.teacherId = teacher;
     }
 
-    public Integer getAvailableSlots() {
+    public int getAvailableSlots() {
         return availableSlots;
     }
 
-    public void setAvailableSlots(Integer availableSlots) {
+    public void setAvailableSlots(int availableSlots) {
         this.availableSlots = availableSlots;
     }
 

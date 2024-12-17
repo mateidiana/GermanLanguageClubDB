@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Vocabulary extends Course{
 
-    public Vocabulary(int id, String courseName, int teacher, Integer maxStudents)
+    public Vocabulary(int id, String courseName, int teacher, int maxStudents)
     {
         super(id, courseName, teacher, maxStudents);
     }

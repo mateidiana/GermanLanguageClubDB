@@ -16,7 +16,7 @@ public class StudentDBRepository extends DBRepository<Student> {
 
     @Override
     public void create(Student obj){
-        String sql = "INSERT INTO STUDENT (ID, NAME)" +
+        String sql = "INSERT INTO STUDENT (STUDENT_ID, NAME)" +
                 " VALUES(?, ?)";
 
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -31,7 +31,7 @@ public class StudentDBRepository extends DBRepository<Student> {
     @Override
     public Student read(int id){
 
-        String sql = "SELECT * FROM DRIVERS WHERE ID = ?";
+        String sql = "SELECT * FROM STUDENT WHERE STUDENT_ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -47,7 +47,7 @@ public class StudentDBRepository extends DBRepository<Student> {
 
     @Override
     public void update(Student obj){
-        String sql  = "UPDATE STUDENT SET name = ? WHERE ID = ?";
+        String sql  = "UPDATE STUDENT SET name = ? WHERE STUDENT_ID = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setString(1, obj.getName());
@@ -61,7 +61,7 @@ public class StudentDBRepository extends DBRepository<Student> {
 
     @Override
     public void delete(int id){
-        String sql = "DELETE FROM STUDENT WHERE ID = ?";
+        String sql = "DELETE FROM STUDENT WHERE STUDENT_ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, id);
             statement.execute();

@@ -17,7 +17,7 @@ public class VocabularyDBRepository extends DBRepository<Vocabulary> {
     @Override
     public void create(Vocabulary obj) {
         String sql = "INSERT INTO VOCABULARY(id, name, " +
-                " teacher_id, max_students) VALUES(?, ?, ?, ?)";
+                "teacher_id, maxStudents) VALUES(?, ?, ?, ?)";
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, obj.getId());
             statement.setString(2, obj.getCourseName());
@@ -50,7 +50,7 @@ public class VocabularyDBRepository extends DBRepository<Vocabulary> {
     @Override
     public void update(Vocabulary obj) {
         String sql = "UPDATE VOCABULARY SET name = ?, "
-                + " teacher_id = ?, max_students= ? WHERE ID = ?";
+                + " teacher_id = ?, maxStudents= ? WHERE ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, obj.getCourseName());
             statement.setInt(2, obj.getTeacher());

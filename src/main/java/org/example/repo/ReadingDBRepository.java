@@ -17,10 +17,13 @@ public class ReadingDBRepository extends DBRepository<Reading> {
     @Override
     public void create(Reading obj) {
         String sql = "INSERT INTO READING(id, name, text, author, title, " +
-                " teacher_id, max_students) VALUES(?, ?, NULL, NULL, NULL, ?, ?)";
+                "teacher_id, max_students) VALUES(?, ?, ?, ?, ?, ?, ?)";
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, obj.getId());
             statement.setString(2, obj.getCourseName());
+            statement.setString(3, obj.getText());
+            statement.setString(4,obj.getTextAuthor());
+            statement.setString(5,obj.getTextTitle());
             statement.setInt(6, obj.getTeacher());
             statement.setInt(7, obj.getAvailableSlots());
             statement.execute();

@@ -51,20 +51,35 @@ public class Main {
     }
     public static void main(String[] args) {
 
-        IRepository<Student> studentRepo=new InMemoryRepository<>();
-        IRepository<Teacher> teacherRepo=new InMemoryRepository<>();
-        IRepository<Reading> readingRepo=new InMemoryRepository<>();
-        IRepository<Grammar> grammarRepo=new InMemoryRepository<>();
-        IRepository<Vocabulary> vocabRepo=new InMemoryRepository<>();
-        IRepository<ReadingExam> readingExamRepo=new InMemoryRepository<>();
-        IRepository<GrammarExam> grammarExamRepo=new InMemoryRepository<>();
-        IRepository<VocabularyExam> vocabExamRepo=new InMemoryRepository<>();
-        IRepository<ExamResult> examResultRepo=new InMemoryRepository<>();
-        IRepository<Question> questionRepo=new InMemoryRepository<>();
-        IRepository<Word> wordRepo=new InMemoryRepository<>();
-        IRepository<Book> bookRepo=new InMemoryRepository<>();
-        IRepository<Enrolled> enrolledRepo = new InMemoryRepository<>();
-        IRepository<BookBelongsToCourse> bookBelongsRepo = new InMemoryRepository<>();
+//        IRepository<Student> studentRepo=new InMemoryRepository<>();
+//        IRepository<Teacher> teacherRepo=new InMemoryRepository<>();
+//        IRepository<Reading> readingRepo=new InMemoryRepository<>();
+//        IRepository<Grammar> grammarRepo=new InMemoryRepository<>();
+//        IRepository<Vocabulary> vocabRepo=new InMemoryRepository<>();
+//        IRepository<ReadingExam> readingExamRepo=new InMemoryRepository<>();
+//        IRepository<GrammarExam> grammarExamRepo=new InMemoryRepository<>();
+//        IRepository<VocabularyExam> vocabExamRepo=new InMemoryRepository<>();
+//        IRepository<ExamResult> examResultRepo=new InMemoryRepository<>();
+//        IRepository<Question> questionRepo=new InMemoryRepository<>();
+//        IRepository<Word> wordRepo=new InMemoryRepository<>();
+//        IRepository<Book> bookRepo=new InMemoryRepository<>();
+//        IRepository<Enrolled> enrolledRepo = new InMemoryRepository<>();
+//        IRepository<BookBelongsToCourse> bookBelongsRepo = new InMemoryRepository<>();
+
+        IRepository<Student> studentRepo=new StudentDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<Teacher> teacherRepo=new TeacherDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<Reading> readingRepo=new ReadingDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<Grammar> grammarRepo=new GrammarDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<Vocabulary> vocabRepo=new VocabularyDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<ReadingExam> readingExamRepo=new ReadingExamDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<GrammarExam> grammarExamRepo=new GrammarExamDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<VocabularyExam> vocabExamRepo=new VocabularyExamDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<ExamResult> examResultRepo=new ExamResultDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<Question> questionRepo=new QuestionDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<Word> wordRepo=new WordDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<Book> bookRepo=new BookDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<Enrolled> enrolledRepo = new EnrolledDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<BookBelongsToCourse> bookBelongsRepo = new BookBelongsToCourseDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
 
         //Insert data into student
         Student student1=new Student("Student1",1);
@@ -116,16 +131,16 @@ public class Main {
         Question question13=new Question(13,"Der Ball ist unter _ Tisch gerollt.","den");
         Question question14=new Question(14,"Mein Mann kommt immer betrunken _ Hause.","nach");
 
-        question5.setGrammarId(1);
-        question6.setGrammarId(1);
-        question7.setGrammarId(1);
-        question8.setGrammarId(1);
-        question9.setGrammarId(1);
-        question10.setGrammarId(1);
-        question11.setGrammarId(1);
-        question12.setGrammarId(1);
-        question13.setGrammarId(1);
-        question14.setGrammarId(1);
+        question5.setGrammarId(10);
+        question6.setGrammarId(10);
+        question7.setGrammarId(10);
+        question8.setGrammarId(10);
+        question9.setGrammarId(10);
+        question10.setGrammarId(10);
+        question11.setGrammarId(10);
+        question12.setGrammarId(10);
+        question13.setGrammarId(10);
+        question14.setGrammarId(10);
 
         question5.setGrammarExamId(1);
         question6.setGrammarExamId(1);
@@ -164,16 +179,16 @@ public class Main {
         Word word9=new Word(9,"fish","Fish");
         Word word10=new Word(10,"dog","Hund");
 
-        word1.setVocabId(1);
-        word2.setVocabId(1);
-        word3.setVocabId(1);
-        word4.setVocabId(1);
-        word5.setVocabId(1);
-        word6.setVocabId(1);
-        word7.setVocabId(1);
-        word8.setVocabId(1);
-        word9.setVocabId(1);
-        word10.setVocabId(1);
+        word1.setVocabId(15);
+        word2.setVocabId(15);
+        word3.setVocabId(15);
+        word4.setVocabId(15);
+        word5.setVocabId(15);
+        word6.setVocabId(15);
+        word7.setVocabId(15);
+        word8.setVocabId(15);
+        word9.setVocabId(15);
+        word10.setVocabId(15);
 
         word1.setVocabExamId(1);
         word2.setVocabExamId(1);
@@ -222,14 +237,14 @@ public class Main {
         readingExamRepo.create(readingExam1);
 
 
-        Grammar grammar1=new Grammar(1,"Grammar1",teacher1.getId(),30);
+        Grammar grammar1=new Grammar(10,"Grammar1",teacher1.getId(),30);
         grammarRepo.create(grammar1);
 
 
         GrammarExam grammarExam1=new GrammarExam(1,"Grammar exam 1", teacher1.getId());
         grammarExamRepo.create(grammarExam1);
 
-        Vocabulary vocabulary1=new Vocabulary(1,"Vocabulary Course 1",teacher1.getId(),15);
+        Vocabulary vocabulary1=new Vocabulary(15,"Vocabulary Course 1",teacher1.getId(),15);
         vocabRepo.create(vocabulary1);
 
         VocabularyExam vocabularyExam1=new VocabularyExam(1,"Vocabulary Exam 1", teacher1.getId());
@@ -253,11 +268,11 @@ public class Main {
 
         GrammarController grammarController=new GrammarController(grammarService);
 
-        grammarController.enroll(1,1);
+        grammarController.enroll(1,10);
 
         VocabularyController vocabularyController=new VocabularyController(vocabService);
 
-        vocabularyController.enroll(1,1);
+        //vocabularyController.enroll(1,15);
 
         ExamController examController=new ExamController(readingExamService,grammarExamService,vocabularyExamService);
 

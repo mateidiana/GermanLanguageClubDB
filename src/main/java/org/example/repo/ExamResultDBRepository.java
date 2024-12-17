@@ -49,7 +49,7 @@ public class ExamResultDBRepository extends DBRepository<ExamResult> {
 
     @Override
     public void update(ExamResult obj) {
-        String sql = "UPDATE EXAMRESULT SET     exam_id= ?, "
+        String sql = "UPDATE EXAMRESULT SET exam_id= ?, "
                 + " student_id = ?, result= ? WHERE ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, obj.getExam());
