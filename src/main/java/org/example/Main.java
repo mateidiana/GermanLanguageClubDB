@@ -9,6 +9,8 @@ import org.example.view.StudentView;
 import org.example.view.TeacherView;
 import org.example.view.View;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 public class Main {
 
@@ -49,20 +51,20 @@ public class Main {
     }
     public static void main(String[] args) {
 
-        IRepository<Student> studentRepo=new InMemoryRepository<>();
-        IRepository<Teacher> teacherRepo=new InMemoryRepository<>();
-        IRepository<Reading> readingRepo=new InMemoryRepository<>();
+        IRepository<Student> studentRepo=new InMemoryRepository<>();  //ok
+        IRepository<Teacher> teacherRepo=new InMemoryRepository<>(); //ok
+        IRepository<Reading> readingRepo=new InMemoryRepository<>();  //ok
         IRepository<Grammar> grammarRepo=new InMemoryRepository<>();
         IRepository<Vocabulary> vocabRepo=new InMemoryRepository<>();
         IRepository<ReadingExam> readingExamRepo=new InMemoryRepository<>();
         IRepository<GrammarExam> grammarExamRepo=new InMemoryRepository<>();
         IRepository<VocabularyExam> vocabExamRepo=new InMemoryRepository<>();
-        IRepository<ExamResult> examResultRepo=new InMemoryRepository<>();
-        IRepository<Question> questionRepo=new InMemoryRepository<>();
-        IRepository<Word> wordRepo=new InMemoryRepository<>();
-        IRepository<Book> bookRepo=new InMemoryRepository<>();
-        IRepository<Enrolled> enrolledRepo = new InMemoryRepository<>();
-        IRepository<BookBelongsToCourse> bookBelongsRepo = new InMemoryRepository<>();
+        IRepository<ExamResult> examResultRepo=new InMemoryRepository<>(); //is empty at first
+        IRepository<Question> questionRepo=new InMemoryRepository<>(); //ok
+        IRepository<Word> wordRepo=new InMemoryRepository<>(); //ok
+        IRepository<Book> bookRepo=new InMemoryRepository<>(); //ok
+        IRepository<Enrolled> enrolledRepo = new InMemoryRepository<>(); //empty at first
+        IRepository<BookBelongsToCourse> bookBelongsRepo = new InMemoryRepository<>();  //ok
 
         //Insert data into student
         Student student1=new Student("Student1",1);
@@ -85,10 +87,75 @@ public class Main {
 
         //Insert data into question
         Question question1=new Question(1,"Der Diener kann auf alle Fragen des Ich-Erzählers antworten.","falsch");
+        Question question2=new Question(2,"Der Ich-Erzähler nimmt einen Essvorrat.","falsch");
+        Question question3=new Question(3,"Der Ich-Erzähler unternimmt eine Reise, deren Dauer undefiniert ist.","wahr");
+        Question question4=new Question(4,"Die Parabel kann eine Metapher für das Unbekannte des Lebens darstellen.","wahr");
+        question1.setReadingId(1);
+        question2.setReadingId(1);
+        question3.setReadingId(1);
+        question4.setReadingId(1);
+
+        questionRepo.create(question1);
+        questionRepo.create(question2);
+        questionRepo.create(question3);
+        questionRepo.create(question4);
+
+        Question question5=new Question(5,"Du (brauchen) _ Hilfe.","brauchst");
+        Question question6=new Question(6,"Ich bin _ Hause.","zu");
+        Question question7=new Question(7,"Er trägt _.","bei");
+        Question question8=new Question(8,"Diana (setzen)_ sich auf das Sofa.","setzt");
+        Question question9=new Question(9,"Stefi klettert auf _ Baum.","den");
+        Question question10=new Question(10,"Ich (besuchen) _ diese Kirche.","besuche");
+        Question question11=new Question(11,"Wir spielen DOTA in _ Klasse.","der");
+        Question question12=new Question(12,"Mama kocht immer (lecker)_ Essen","leckeres");
+        Question question13=new Question(13,"Der Ball ist unter _ Tisch gerollt.","den");
+        Question question14=new Question(14,"Mein Mann kommt immer betrunken _ Hause.","nach");
+
+
         //Insert data into word
+        Word word1=new Word(1,"dog","Hund");
+        Word word2=new Word(2,"cat","Katze");
+        Word word3=new Word(3,"apple","Apfel");
+        Word word4=new Word(4,"book","Buch");
+        Word word5=new Word(5,"house","Haus");
+        Word word6=new Word(6,"car","Auto");
+        Word word7=new Word(7,"tree","Baum");
+        Word word8=new Word(8,"flower","Blume");
+        Word word9=new Word(9,"fish","Fish");
+        Word word10=new Word(10,"dog","Hund");
+
         //Insert data into book
+        Book book1=new Book(1,"Das Schloss", "Franz Kafka");
+        Book book2=new Book(2,"Die Verwandlung", "Franz Kafka");
+        bookRepo.create(book1);
+        bookRepo.create(book2);
+
+        //Insert data into reading
+        Reading reading1=new Reading(1,"Reading1",teacher1.getId(),25);
+        List<Question> questions=new ArrayList<>();
+        questions.add(question1);
+        questions.add(question2);
+        questions.add(question3);
+        questions.add(question4);
 
 
+        reading1.setExercises(questions);
+        reading1.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
+        reading1.setTextAuthor("Franz Kafka");
+        reading1.setTextTitle("Der Aufbruch");
+        readingRepo.create(reading1);
+
+
+        BookBelongsToCourse bookBelongsToCourse1=new BookBelongsToCourse(1,1,1);
+        BookBelongsToCourse bookBelongsToCourse2=new BookBelongsToCourse(2,1,2);
+        bookBelongsRepo.create(bookBelongsToCourse1);
+        bookBelongsRepo.create(bookBelongsToCourse2);
+
+        List<Book> books=new ArrayList<>();
+        books.add(book1);
+        books.add(book2);
+        reading1.setMandatoryBooks(books);
+        readingRepo.update(reading1);
 
 
 
@@ -109,6 +176,8 @@ public class Main {
         StudentController studentController=new StudentController(studentService);
         TeacherController teacherController=new TeacherController(teacherService);
         ReadingController readingController=new ReadingController(readingService);
+
+        readingController.enroll(1,1);
         GrammarController grammarController=new GrammarController(grammarService);
         VocabularyController vocabularyController=new VocabularyController(vocabService);
         ExamController examController=new ExamController(readingExamService,grammarExamService,vocabularyExamService);

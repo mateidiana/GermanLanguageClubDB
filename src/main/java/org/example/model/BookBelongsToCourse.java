@@ -7,7 +7,7 @@ public class BookBelongsToCourse extends Entity{
     public BookBelongsToCourse(int id, int readingId, int bookId)
     {
         super(id);
-        this.readingId=bookId;
+        this.readingId=readingId;
         this.bookId=bookId;
     }
 
