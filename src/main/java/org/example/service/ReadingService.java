@@ -177,8 +177,7 @@ public class ReadingService {
             readingRepo.delete(courseId);
             return true;
         }
-        else
-            return false;
+        return false;
     }
 
     public void createOrUpdateReadingCourse(int courseId, int teacherId, String courseName, Integer maxStudents, int exerciseSet){

@@ -14,7 +14,7 @@ public class VocabularyController {
 
     public List<Vocabulary> showEnrolledVocabCourses(int studentId){return vocabService.showEnrolledVocabularyCourses(studentId);}
 
-    public List<Word> practiceGrammar(int studentId, int courseId){return vocabService.practiceVocabulary(studentId,courseId);}
+    public List<Word> practiceVocabulary(int studentId, int courseId){return vocabService.practiceVocabulary(studentId,courseId);}
 
     public String handleAnswer(int studentId, int questionId, String answer){return vocabService.handleAnswer(studentId,questionId,answer);}
 
