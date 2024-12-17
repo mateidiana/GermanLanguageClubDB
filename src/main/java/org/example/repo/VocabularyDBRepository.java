@@ -90,7 +90,7 @@ public class VocabularyDBRepository extends DBRepository<Vocabulary> {
     }
 
     private Vocabulary extractFromResultSet(ResultSet resultSet) throws SQLException {
-        Vocabulary vocabulary=new Vocabulary(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getInt("teacher_id"),resultSet.getInt("max_students"));
+        Vocabulary vocabulary=new Vocabulary(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getInt("teacher_id"),resultSet.getInt("maxStudents"));
         return vocabulary;
     }
 }

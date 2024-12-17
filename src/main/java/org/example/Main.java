@@ -142,16 +142,16 @@ public class Main {
         question13.setGrammarId(10);
         question14.setGrammarId(10);
 
-        question5.setGrammarExamId(1);
-        question6.setGrammarExamId(1);
-        question7.setGrammarExamId(1);
-        question8.setGrammarExamId(1);
-        question9.setGrammarExamId(1);
-        question10.setGrammarExamId(1);
-        question11.setGrammarExamId(1);
-        question12.setGrammarExamId(1);
-        question13.setGrammarExamId(1);
-        question14.setGrammarExamId(1);
+        question5.setGrammarExamId(2);
+        question6.setGrammarExamId(2);
+        question7.setGrammarExamId(2);
+        question8.setGrammarExamId(2);
+        question9.setGrammarExamId(2);
+        question10.setGrammarExamId(2);
+        question11.setGrammarExamId(2);
+        question12.setGrammarExamId(2);
+        question13.setGrammarExamId(2);
+        question14.setGrammarExamId(2);
 
         questionRepo.create(question5);
         questionRepo.create(question6);
@@ -190,16 +190,16 @@ public class Main {
         word9.setVocabId(15);
         word10.setVocabId(15);
 
-        word1.setVocabExamId(1);
-        word2.setVocabExamId(1);
-        word3.setVocabExamId(1);
-        word4.setVocabExamId(1);
-        word5.setVocabExamId(1);
-        word6.setVocabExamId(1);
-        word7.setVocabExamId(1);
-        word8.setVocabExamId(1);
-        word9.setVocabExamId(1);
-        word10.setVocabExamId(1);
+        word1.setVocabExamId(3);
+        word2.setVocabExamId(3);
+        word3.setVocabExamId(3);
+        word4.setVocabExamId(3);
+        word5.setVocabExamId(3);
+        word6.setVocabExamId(3);
+        word7.setVocabExamId(3);
+        word8.setVocabExamId(3);
+        word9.setVocabExamId(3);
+        word10.setVocabExamId(3);
 
         wordRepo.create(word1);
         wordRepo.create(word2);
@@ -241,13 +241,13 @@ public class Main {
         grammarRepo.create(grammar1);
 
 
-        GrammarExam grammarExam1=new GrammarExam(1,"Grammar exam 1", teacher1.getId());
+        GrammarExam grammarExam1=new GrammarExam(2,"Grammar exam 1", teacher1.getId());
         grammarExamRepo.create(grammarExam1);
 
         Vocabulary vocabulary1=new Vocabulary(15,"Vocabulary Course 1",teacher1.getId(),15);
         vocabRepo.create(vocabulary1);
 
-        VocabularyExam vocabularyExam1=new VocabularyExam(1,"Vocabulary Exam 1", teacher1.getId());
+        VocabularyExam vocabularyExam1=new VocabularyExam(3,"Vocabulary Exam 1", teacher1.getId());
         vocabExamRepo.create(vocabularyExam1);
 
 
@@ -272,7 +272,7 @@ public class Main {
 
         VocabularyController vocabularyController=new VocabularyController(vocabService);
 
-        //vocabularyController.enroll(1,15);
+        vocabularyController.enroll(1,15);
 
         ExamController examController=new ExamController(readingExamService,grammarExamService,vocabularyExamService);
 
