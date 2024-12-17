@@ -62,7 +62,37 @@ public class Main {
         IRepository<Word> wordRepo=new InMemoryRepository<>();
         IRepository<Book> bookRepo=new InMemoryRepository<>();
 
-        //To do insert data in repos
+        //Insert data into student
+        Student student1=new Student("Student1",1);
+        Student student2=new Student("Student2",2);
+        Student student3=new Student("Student3",3);
+
+        studentRepo.create(student1);
+        studentRepo.create(student2);
+        studentRepo.create(student3);
+
+        //Insert data into teacher
+        Teacher teacher1=new Teacher("Teacher1",1);
+        Teacher teacher2=new Teacher("Teacher2",2);
+        Teacher teacher3=new Teacher("Teacher3",3);
+
+        teacherRepo.create(teacher1);
+        teacherRepo.create(teacher2);
+        teacherRepo.create(teacher3);
+
+
+        //Insert data into question
+        Question question1=new Question(1,"Der Diener kann auf alle Fragen des Ich-Erzählers antworten.","falsch");
+        //Insert data into word
+        //Insert data into book
+
+
+
+
+
+
+
+
 
 
         StudentService studentService=new StudentService(studentRepo);
