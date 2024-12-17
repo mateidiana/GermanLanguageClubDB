@@ -18,7 +18,7 @@ public class VocabularyController {
 
     public String handleAnswer(int studentId, int questionId, String answer){return vocabService.handleAnswer(studentId,questionId,answer);}
 
-    public List<Word> reviewPastVocabMistakes(int studentId){return vocabService.reviewPastVocabMistakes(studentId);}
+    //public List<Word> reviewPastVocabMistakes(int studentId){return vocabService.reviewPastVocabMistakes(studentId);}
 
     public List<Vocabulary> getAvailableVocabCourses(){return vocabService.getAvailableVocabularyCourses();}
 

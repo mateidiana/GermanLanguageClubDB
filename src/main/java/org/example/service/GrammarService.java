@@ -17,12 +17,15 @@ public class GrammarService {
 
     private final IRepository<Question> questionRepo;
 
+    private final IRepository<Enrolled> enrolledRepo;
 
-    public GrammarService(IRepository<Grammar> grammarRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo) {
+
+    public GrammarService(IRepository<Grammar> grammarRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo, IRepository<Enrolled> enrolledRepo) {
         this.grammarRepo = grammarRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
         this.questionRepo = questionRepo;
+        this.enrolledRepo = enrolledRepo;
     }
 
     public Student getStudentById(int studentId){
@@ -83,6 +86,10 @@ public class GrammarService {
                 student.getGrammarCourses().add(course);
                 grammarRepo.create(course);
                 studentRepo.create(student);
+
+                int nextId=enrolledRepo.getAll().size();
+                Enrolled enrolled=new Enrolled(nextId,studentId,grammarCourseId);
+                enrolledRepo.create(enrolled);
             }
         }
 
@@ -124,21 +131,21 @@ public class GrammarService {
         if (answer.equals(question.getRightAnswer()))
             return "Correct!";
         else{
-            Student student=getStudentById(studentId);
-            List<Question> pastMistakes=student.getPastGrammarMistakes();
-            pastMistakes.add(question);
-            student.setPastGrammarMistakes(pastMistakes);
-            studentRepo.update(student);
+            //Student student=getStudentById(studentId);
+            //List<Question> pastMistakes=student.getPastGrammarMistakes();
+            //pastMistakes.add(question);
+            //student.setPastGrammarMistakes(pastMistakes);
+            //studentRepo.update(student);
             return "Wrong!";
         }
     }
 
 
-    public List<Question> reviewPastGrammarMistakes(int studentId){
-        idDataCheck(studentId);
-        Student student= getStudentById(studentId);
-        return student.getPastGrammarMistakes();
-    }
+//    public List<Question> reviewPastGrammarMistakes(int studentId){
+//        idDataCheck(studentId);
+//        Student student= getStudentById(studentId);
+//        return student.getPastGrammarMistakes();
+//    }
 
 
     public List<Grammar> getAvailableGrammarCourses(){

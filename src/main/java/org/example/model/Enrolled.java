@@ -1,10 +1,11 @@
 package org.example.model;
 
-public class Enrolled {
+public class Enrolled extends Entity{
     private int studentId;
     private int courseId;
 
-    public Enrolled(int studentId, int courseId){
+    public Enrolled(int id, int studentId, int courseId){
+        super(id);
         this.studentId=studentId;
         this.courseId=courseId;
     }

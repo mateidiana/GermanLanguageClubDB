@@ -22,7 +22,7 @@ public class ReadingController {
 
     public String handleAnswer(int studentId, int questionId, String answer){return readingService.handleAnswer(studentId,questionId,answer);}
 
-    public List<Question> reviewPastReadingMistakes(int studentId){return readingService.reviewPastReadingMistakes(studentId);}
+    //public List<Question> reviewPastReadingMistakes(int studentId){return readingService.reviewPastReadingMistakes(studentId);}
 
     public List<Reading> getAvailableReadingCourses(){return readingService.getAvailableReadingCourses();}
 

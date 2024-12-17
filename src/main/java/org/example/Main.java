@@ -61,6 +61,8 @@ public class Main {
         IRepository<Question> questionRepo=new InMemoryRepository<>();
         IRepository<Word> wordRepo=new InMemoryRepository<>();
         IRepository<Book> bookRepo=new InMemoryRepository<>();
+        IRepository<Enrolled> enrolledRepo = new InMemoryRepository<>();
+        IRepository<BookBelongsToCourse> bookBelongsRepo = new InMemoryRepository<>();
 
         //Insert data into student
         Student student1=new Student("Student1",1);
@@ -97,9 +99,9 @@ public class Main {
 
         StudentService studentService=new StudentService(studentRepo);
         TeacherService teacherService=new TeacherService(teacherRepo);
-        ReadingService readingService=new ReadingService(readingRepo,studentRepo,teacherRepo,questionRepo,bookRepo);
-        GrammarService grammarService=new GrammarService(grammarRepo,studentRepo,teacherRepo,questionRepo);
-        VocabService vocabService=new VocabService(vocabRepo,studentRepo,teacherRepo,wordRepo);
+        ReadingService readingService=new ReadingService(readingRepo,studentRepo,teacherRepo,questionRepo,bookRepo,enrolledRepo,bookBelongsRepo);
+        GrammarService grammarService=new GrammarService(grammarRepo,studentRepo,teacherRepo,questionRepo, enrolledRepo);
+        VocabService vocabService=new VocabService(vocabRepo,studentRepo,teacherRepo,wordRepo,enrolledRepo);
         ReadingExamService readingExamService=new ReadingExamService(readingExamRepo,studentRepo,teacherRepo,questionRepo,examResultRepo);
         GrammarExamService grammarExamService=new GrammarExamService(grammarExamRepo,studentRepo,teacherRepo,questionRepo,examResultRepo);
         VocabularyExamService vocabularyExamService=new VocabularyExamService(vocabExamRepo,studentRepo,teacherRepo,wordRepo,examResultRepo);

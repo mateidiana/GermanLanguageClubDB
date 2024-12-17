@@ -19,12 +19,17 @@ public class ReadingService {
 
     private final IRepository<Book> bookRepo;
 
-    public ReadingService(IRepository<Reading> readingRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo, IRepository<Book> bookRepo) {
+    private final IRepository<Enrolled> enrolledRepo;
+    private final IRepository<BookBelongsToCourse> bookBelongsRepo;
+
+    public ReadingService(IRepository<Reading> readingRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo, IRepository<Book> bookRepo, IRepository<Enrolled> enrolledRepo, IRepository<BookBelongsToCourse> bookBelongsRepo) {
         this.readingRepo = readingRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
         this.questionRepo = questionRepo;
         this.bookRepo = bookRepo;
+        this.enrolledRepo=enrolledRepo;
+        this.bookBelongsRepo=bookBelongsRepo;
     }
 
     public Student getStudentById(int studentId){
@@ -88,6 +93,10 @@ public class ReadingService {
                 student.getReadingCourses().add(course);
                 readingRepo.create(course);
                 studentRepo.create(student);
+
+                int nextId=enrolledRepo.getAll().size();
+                Enrolled enrolled=new Enrolled(nextId,studentId,readingCourseId);
+                enrolledRepo.create(enrolled);
             }
         }
 
@@ -130,21 +139,21 @@ public class ReadingService {
         if (answer.equals(question.getRightAnswer()))
             return "Correct!";
         else{
-            Student student=getStudentById(studentId);
-            List<Question> pastMistakes=student.getPastReadingMistakes();
-            pastMistakes.add(question);
-            student.setPastReadingMistakes(pastMistakes);
-            studentRepo.update(student);
+//            Student student=getStudentById(studentId);
+//            List<Question> pastMistakes=student.getPastReadingMistakes();
+//            pastMistakes.add(question);
+//            student.setPastReadingMistakes(pastMistakes);
+//            studentRepo.update(student);
             return "Wrong!";
         }
     }
 
 
-    public List<Question> reviewPastReadingMistakes(int studentId){
-        idDataCheck(studentId);
-        Student student= getStudentById(studentId);
-        return student.getPastReadingMistakes();
-    }
+//    public List<Question> reviewPastReadingMistakes(int studentId){
+//        idDataCheck(studentId);
+//        Student student= getStudentById(studentId);
+//        return student.getPastReadingMistakes();
+//    }
 
     public List<Reading> getAvailableReadingCourses(){
         return readingRepo.getAll();
@@ -283,6 +292,10 @@ public class ReadingService {
         {
             course.getMandatoryBooks().add(book);
             readingRepo.update(course);
+
+            int nextIdBook=bookBelongsRepo.getAll().size();
+            BookBelongsToCourse bookBelongsToCourse=new BookBelongsToCourse(nextIdBook,courseId,nextId);
+            bookBelongsRepo.create(bookBelongsToCourse);
             return true;
         }
         else return false;

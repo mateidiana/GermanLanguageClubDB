@@ -127,23 +127,23 @@ public class StudentView {
                     break;
 
                 case "3":
-                    int studentId3=readStudentId(scanner);
-                    String answer3;
-                    try{
-                        List<Question> pastMistakes=readingController.reviewPastReadingMistakes(studentId3);
-                        if (pastMistakes.isEmpty())
-                            System.out.println("You have no past mistakes yet!");
-                        else{
-                            for (Question q:pastMistakes)
-                            {
-                                System.out.println(q);
-                                answer3=readAnswer(scanner);
-                                try{System.out.println(readingController.handleAnswer(studentId3,q.getId(),answer3)+"\n");
-                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
-                            }
-                        }
-
-                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+//                    int studentId3=readStudentId(scanner);
+//                    String answer3;
+//                    try{
+//                        List<Question> pastMistakes=readingController.reviewPastReadingMistakes(studentId3);
+//                        if (pastMistakes.isEmpty())
+//                            System.out.println("You have no past mistakes yet!");
+//                        else{
+//                            for (Question q:pastMistakes)
+//                            {
+//                                System.out.println(q);
+//                                answer3=readAnswer(scanner);
+//                                try{System.out.println(readingController.handleAnswer(studentId3,q.getId(),answer3)+"\n");
+//                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+//                            }
+//                        }
+//
+//                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
 
                     break;
 
@@ -162,7 +162,7 @@ public class StudentView {
                     int studentId4=readStudentId(scanner);
                     int examId=readExamId(scanner);
                     String answer4;
-                    float score= 0.0F;
+                    float score= 2.0F;
 
                     try{
                         List<Question> examQuestions=examController.takeReadingExam(studentId4,examId);
@@ -277,23 +277,23 @@ public class StudentView {
 
                 case "3":
 
-                    int studentId3=readStudentId(scanner);
-                    String answer3;
-                    try{
-                        List<Question> pastMistakes=grammarController.reviewPastGrammarMistakes(studentId3);
-                        if (pastMistakes.isEmpty())
-                            System.out.println("You have no past mistakes yet!");
-                        else{
-                            for (Question q:pastMistakes)
-                            {
-                                System.out.println(q);
-                                answer3=readAnswer(scanner);
-                                try{System.out.println(grammarController.handleAnswer(studentId3,q.getId(),answer3)+"\n");
-                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
-                            }
-                        }
-
-                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+//                    int studentId3=readStudentId(scanner);
+//                    String answer3;
+//                    try{
+//                        List<Question> pastMistakes=grammarController.reviewPastGrammarMistakes(studentId3);
+//                        if (pastMistakes.isEmpty())
+//                            System.out.println("You have no past mistakes yet!");
+//                        else{
+//                            for (Question q:pastMistakes)
+//                            {
+//                                System.out.println(q);
+//                                answer3=readAnswer(scanner);
+//                                try{System.out.println(grammarController.handleAnswer(studentId3,q.getId(),answer3)+"\n");
+//                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+//                            }
+//                        }
+//
+//                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
 
                     break;
 
@@ -407,23 +407,23 @@ public class StudentView {
                     break;
                 case "3":
 
-                    int studentId3=readStudentId(scanner);
-                    String answer3;
-                    try{
-                        List<Word> pastMistakes=vocabController.reviewPastVocabMistakes(studentId3);
-                        if (pastMistakes.isEmpty())
-                            System.out.println("You have no past mistakes yet!");
-                        else{
-                            for (Word q:pastMistakes)
-                            {
-                                System.out.println(q);
-                                answer3=readAnswer(scanner);
-                                try{System.out.println(vocabController.handleAnswer(studentId3,q.getId(),answer3)+"\n");
-                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
-                            }
-                        }
-
-                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+//                    int studentId3=readStudentId(scanner);
+//                    String answer3;
+//                    try{
+//                        List<Word> pastMistakes=vocabController.reviewPastVocabMistakes(studentId3);
+//                        if (pastMistakes.isEmpty())
+//                            System.out.println("You have no past mistakes yet!");
+//                        else{
+//                            for (Word q:pastMistakes)
+//                            {
+//                                System.out.println(q);
+//                                answer3=readAnswer(scanner);
+//                                try{System.out.println(vocabController.handleAnswer(studentId3,q.getId(),answer3)+"\n");
+//                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+//                            }
+//                        }
+//
+//                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
 
                     break;
 

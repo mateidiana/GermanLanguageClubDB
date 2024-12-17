@@ -17,12 +17,15 @@ public class VocabService {
 
     private final IRepository<Word> wordRepo;
 
+    private final IRepository<Enrolled> enrolledRepo;
 
-    public VocabService(IRepository<Vocabulary> vocabRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Word> wordRepo) {
+
+    public VocabService(IRepository<Vocabulary> vocabRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Word> wordRepo, IRepository<Enrolled> enrolledRepo) {
         this.vocabRepo = vocabRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
         this.wordRepo = wordRepo;
+        this.enrolledRepo=enrolledRepo;
     }
 
     public Student getStudentById(int studentId){
@@ -82,6 +85,10 @@ public class VocabService {
                 student.getVocabCourses().add(course);
                 vocabRepo.create(course);
                 studentRepo.create(student);
+
+                int nextId=enrolledRepo.getAll().size();
+                Enrolled enrolled=new Enrolled(nextId,studentId,vocabCourseId);
+                enrolledRepo.create(enrolled);
             }
         }
 
@@ -122,20 +129,20 @@ public class VocabService {
         if (answer.equals(word.getMeaning()))
             return "Correct!";
         else{
-            Student student=getStudentById(studentId);
-            List<Word> pastMistakes=student.getPastVocabMistakes();
-            pastMistakes.add(word);
-            student.setPastVocabMistakes(pastMistakes);
-            studentRepo.update(student);
+//            Student student=getStudentById(studentId);
+//            List<Word> pastMistakes=student.getPastVocabMistakes();
+//            pastMistakes.add(word);
+//            student.setPastVocabMistakes(pastMistakes);
+//            studentRepo.update(student);
             return "Wrong!";
         }
     }
 
-    public List<Word> reviewPastVocabMistakes(int studentId){
-        idDataCheck(studentId);
-        Student student= getStudentById(studentId);
-        return student.getPastVocabMistakes();
-    }
+//    public List<Word> reviewPastVocabMistakes(int studentId){
+//        idDataCheck(studentId);
+//        Student student= getStudentById(studentId);
+//        return student.getPastVocabMistakes();
+//    }
 
 
     public List<Vocabulary> getAvailableVocabularyCourses(){
