@@ -29,7 +29,7 @@ public class TeacherView {
         boolean continueLoop = true;
 
         while (continueLoop) {
-            System.out.print("Select an option:\n\n1. Register as new teacher\n2. View reading courses\n3. View writing courses\n4. View grammar courses\n5. View vocabulary courses\n0. Exit\n");
+            System.out.print("Select an option:\n\n1. Register as new teacher\n2. View reading courses\n3. View grammar courses\n4. View vocabulary courses\n0. Exit\n");
 
             String option = scanner.nextLine();
 
