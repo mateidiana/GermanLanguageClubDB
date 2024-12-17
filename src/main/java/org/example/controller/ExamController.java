@@ -39,7 +39,7 @@ public class ExamController {
 
     public List<Student> filterStudentsByPassingGradeOnReadingExam(int examId){return readingExamService.filterStudentsByPassingGradeOnReadingExam(examId);}
 
-
+    public String getText(int examId){return readingExamService.getText(examId);}
 
     public List<Question> takeGrammarExam(int studentId, int examId){return grammarExamService.takeGrammarExam(studentId,examId);}
 

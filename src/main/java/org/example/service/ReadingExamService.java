@@ -225,6 +225,11 @@ public class ReadingExamService {
         return filteredStud;
     }
 
+    public String getText(int examId){
+        idDataCheck(examId);
+        return getReadingExamById(examId).getText();
+    }
+
     public void idDataCheck(int id){
         if (id<1)
             throw new ValidationException("Id cannot be less than 1!");

@@ -12,21 +12,21 @@ public class VocabularyController {
 
     public void enroll(int studentId, int courseId){vocabService.enroll(studentId,courseId);}
 
-    public List<Vocabulary> showEnrolledGrammarCourses(int studentId){return vocabService.showEnrolledVocabularyCourses(studentId);}
+    public List<Vocabulary> showEnrolledVocabCourses(int studentId){return vocabService.showEnrolledVocabularyCourses(studentId);}
 
     public List<Word> practiceGrammar(int studentId, int courseId){return vocabService.practiceVocabulary(studentId,courseId);}
 
     public String handleAnswer(int studentId, int questionId, String answer){return vocabService.handleAnswer(studentId,questionId,answer);}
 
-    public List<Word> reviewPastGrammarMistakes(int studentId){return vocabService.reviewPastVocabMistakes(studentId);}
+    public List<Word> reviewPastVocabMistakes(int studentId){return vocabService.reviewPastVocabMistakes(studentId);}
 
-    public List<Vocabulary> getAvailableGrammarCourses(){return vocabService.getAvailableVocabularyCourses();}
+    public List<Vocabulary> getAvailableVocabCourses(){return vocabService.getAvailableVocabularyCourses();}
 
     public List<Student> getAllStudents(){return vocabService.getAllStudents();}
 
     public List<Student> getEnrolledStudents(int courseId){return vocabService.getEnrolledStudents(courseId);}
 
-    public List<Student> showStudentsEnrolledInGrammarCourses(){return vocabService.showStudentsEnrolledInVocabularyCourses();}
+    public List<Student> showStudentsEnrolledInVocabCourses(){return vocabService.showStudentsEnrolledInVocabularyCourses();}
 
     public boolean removeCourse(int courseId, int teacherId){return vocabService.removeCourse(courseId,teacherId);}
 

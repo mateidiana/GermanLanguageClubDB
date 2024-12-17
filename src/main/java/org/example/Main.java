@@ -5,34 +5,14 @@ import org.example.repo.*;
 import org.example.service.*;
 import org.example.controller.*;
 import org.example.model.*;
+import org.example.view.StudentView;
+import org.example.view.TeacherView;
+import org.example.view.View;
+
 import java.util.Scanner;
 public class Main {
-    public static void main(String[] args) {
-//        IRepository<Student> studentRepo=new InMemoryRepository<>();
-//        Student s1=new Student("Student1",1);
-//        Student s2=new Student("Student2",2);
-//        Student s3=new Student("Student3",3);
-//        studentRepo.create(s1);
-//        studentRepo.create(s2);
-//        studentRepo.create(s3);
-//        StudentService studentService=new StudentService(studentRepo);
-//        for (Student student:studentRepo.getAll())
-//        {
-//            System.out.println(student.getName());
-//        }
-//
-//        Student studentRepl=new Student("Studentrepl",1); //replaces student with id 1 with studentRepl
-//
-//        studentRepo.update(studentRepl);
-//
-//        for (Student student:studentRepo.getAll())
-//        {
-//            System.out.println(student.getName());
-//        }
-//        Student student=studentService.getStudentById(1);
-//        System.out.println(student.getName());
 
-
+    public static void testOperations(){
         IRepository<Student> studentRepo=new InMemoryRepository<>();
         StudentService studentService = new StudentService(studentRepo);
         StudentController studentController = new StudentController(studentService);
@@ -65,6 +45,45 @@ public class Main {
         try{
             Student example=studentController.getStudentById(0);
         } catch (EntityNotFoundException | ValidationException e) {System.out.println(e.getMessage());}
+
+    }
+    public static void main(String[] args) {
+
+        IRepository<Student> studentRepo=new InMemoryRepository<>();
+        IRepository<Teacher> teacherRepo=new InMemoryRepository<>();
+        IRepository<Reading> readingRepo=new InMemoryRepository<>();
+        IRepository<Grammar> grammarRepo=new InMemoryRepository<>();
+        IRepository<Vocabulary> vocabRepo=new InMemoryRepository<>();
+        IRepository<ReadingExam> readingExamRepo=new InMemoryRepository<>();
+        IRepository<GrammarExam> grammarExamRepo=new InMemoryRepository<>();
+        IRepository<VocabularyExam> vocabExamRepo=new InMemoryRepository<>();
+        IRepository<ExamResult> examResultRepo=new InMemoryRepository<>();
+        IRepository<Question> questionRepo=new InMemoryRepository<>();
+        IRepository<Word> wordRepo=new InMemoryRepository<>();
+        IRepository<Book> bookRepo=new InMemoryRepository<>();
+
+
+        StudentService studentService=new StudentService(studentRepo);
+        TeacherService teacherService=new TeacherService(teacherRepo);
+        ReadingService readingService=new ReadingService(readingRepo,studentRepo,teacherRepo,questionRepo,bookRepo);
+        GrammarService grammarService=new GrammarService(grammarRepo,studentRepo,teacherRepo,questionRepo);
+        VocabService vocabService=new VocabService(vocabRepo,studentRepo,teacherRepo,wordRepo);
+        ReadingExamService readingExamService=new ReadingExamService(readingExamRepo,studentRepo,teacherRepo,questionRepo,examResultRepo);
+        GrammarExamService grammarExamService=new GrammarExamService(grammarExamRepo,studentRepo,teacherRepo,questionRepo,examResultRepo);
+        VocabularyExamService vocabularyExamService=new VocabularyExamService(vocabExamRepo,studentRepo,teacherRepo,wordRepo,examResultRepo);
+
+        StudentController studentController=new StudentController(studentService);
+        TeacherController teacherController=new TeacherController(teacherService);
+        ReadingController readingController=new ReadingController(readingService);
+        GrammarController grammarController=new GrammarController(grammarService);
+        VocabularyController vocabularyController=new VocabularyController(vocabService);
+        ExamController examController=new ExamController(readingExamService,grammarExamService,vocabularyExamService);
+
+        StudentView studentView=new StudentView(studentController,readingController,examController,grammarController,vocabularyController);
+        TeacherView teacherView=new TeacherView(teacherController,readingController,vocabularyController,grammarController,examController);
+
+        View view = new View(studentView,teacherView);
+        view.start();
 
 
 
