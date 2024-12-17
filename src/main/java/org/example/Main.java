@@ -51,20 +51,20 @@ public class Main {
     }
     public static void main(String[] args) {
 
-        IRepository<Student> studentRepo=new InMemoryRepository<>();  //ok
-        IRepository<Teacher> teacherRepo=new InMemoryRepository<>(); //ok
-        IRepository<Reading> readingRepo=new InMemoryRepository<>();  //ok
+        IRepository<Student> studentRepo=new InMemoryRepository<>();
+        IRepository<Teacher> teacherRepo=new InMemoryRepository<>();
+        IRepository<Reading> readingRepo=new InMemoryRepository<>();
         IRepository<Grammar> grammarRepo=new InMemoryRepository<>();
         IRepository<Vocabulary> vocabRepo=new InMemoryRepository<>();
         IRepository<ReadingExam> readingExamRepo=new InMemoryRepository<>();
         IRepository<GrammarExam> grammarExamRepo=new InMemoryRepository<>();
         IRepository<VocabularyExam> vocabExamRepo=new InMemoryRepository<>();
-        IRepository<ExamResult> examResultRepo=new InMemoryRepository<>(); //is empty at first
-        IRepository<Question> questionRepo=new InMemoryRepository<>(); //ok
-        IRepository<Word> wordRepo=new InMemoryRepository<>(); //ok
-        IRepository<Book> bookRepo=new InMemoryRepository<>(); //ok
-        IRepository<Enrolled> enrolledRepo = new InMemoryRepository<>(); //empty at first
-        IRepository<BookBelongsToCourse> bookBelongsRepo = new InMemoryRepository<>();  //ok
+        IRepository<ExamResult> examResultRepo=new InMemoryRepository<>();
+        IRepository<Question> questionRepo=new InMemoryRepository<>();
+        IRepository<Word> wordRepo=new InMemoryRepository<>();
+        IRepository<Book> bookRepo=new InMemoryRepository<>();
+        IRepository<Enrolled> enrolledRepo = new InMemoryRepository<>();
+        IRepository<BookBelongsToCourse> bookBelongsRepo = new InMemoryRepository<>();
 
         //Insert data into student
         Student student1=new Student("Student1",1);
@@ -95,6 +95,11 @@ public class Main {
         question3.setReadingId(1);
         question4.setReadingId(1);
 
+        question1.setReadingExamId(1);
+        question2.setReadingExamId(1);
+        question3.setReadingExamId(1);
+        question4.setReadingExamId(1);
+
         questionRepo.create(question1);
         questionRepo.create(question2);
         questionRepo.create(question3);
@@ -111,6 +116,41 @@ public class Main {
         Question question13=new Question(13,"Der Ball ist unter _ Tisch gerollt.","den");
         Question question14=new Question(14,"Mein Mann kommt immer betrunken _ Hause.","nach");
 
+        question5.setGrammarId(1);
+        question6.setGrammarId(1);
+        question7.setGrammarId(1);
+        question8.setGrammarId(1);
+        question9.setGrammarId(1);
+        question10.setGrammarId(1);
+        question11.setGrammarId(1);
+        question12.setGrammarId(1);
+        question13.setGrammarId(1);
+        question14.setGrammarId(1);
+
+        question5.setGrammarExamId(1);
+        question6.setGrammarExamId(1);
+        question7.setGrammarExamId(1);
+        question8.setGrammarExamId(1);
+        question9.setGrammarExamId(1);
+        question10.setGrammarExamId(1);
+        question11.setGrammarExamId(1);
+        question12.setGrammarExamId(1);
+        question13.setGrammarExamId(1);
+        question14.setGrammarExamId(1);
+
+        questionRepo.create(question5);
+        questionRepo.create(question6);
+        questionRepo.create(question7);
+        questionRepo.create(question8);
+        questionRepo.create(question9);
+        questionRepo.create(question10);
+        questionRepo.create(question11);
+        questionRepo.create(question12);
+        questionRepo.create(question13);
+        questionRepo.create(question14);
+
+
+
 
         //Insert data into word
         Word word1=new Word(1,"dog","Hund");
@@ -123,6 +163,39 @@ public class Main {
         Word word8=new Word(8,"flower","Blume");
         Word word9=new Word(9,"fish","Fish");
         Word word10=new Word(10,"dog","Hund");
+
+        word1.setVocabId(1);
+        word2.setVocabId(1);
+        word3.setVocabId(1);
+        word4.setVocabId(1);
+        word5.setVocabId(1);
+        word6.setVocabId(1);
+        word7.setVocabId(1);
+        word8.setVocabId(1);
+        word9.setVocabId(1);
+        word10.setVocabId(1);
+
+        word1.setVocabExamId(1);
+        word2.setVocabExamId(1);
+        word3.setVocabExamId(1);
+        word4.setVocabExamId(1);
+        word5.setVocabExamId(1);
+        word6.setVocabExamId(1);
+        word7.setVocabExamId(1);
+        word8.setVocabExamId(1);
+        word9.setVocabExamId(1);
+        word10.setVocabExamId(1);
+
+        wordRepo.create(word1);
+        wordRepo.create(word2);
+        wordRepo.create(word3);
+        wordRepo.create(word4);
+        wordRepo.create(word5);
+        wordRepo.create(word6);
+        wordRepo.create(word7);
+        wordRepo.create(word8);
+        wordRepo.create(word9);
+        wordRepo.create(word10);
 
         //Insert data into book
         Book book1=new Book(1,"Das Schloss", "Franz Kafka");
@@ -145,6 +218,22 @@ public class Main {
         bookBelongsRepo.create(bookBelongsToCourse2);
 
 
+        ReadingExam readingExam1=new ReadingExam(1,"Reading Exam 1",teacher1.getId());
+        readingExamRepo.create(readingExam1);
+
+
+        Grammar grammar1=new Grammar(1,"Grammar1",teacher1.getId(),30);
+        grammarRepo.create(grammar1);
+
+
+        GrammarExam grammarExam1=new GrammarExam(1,"Grammar exam 1", teacher1.getId());
+        grammarExamRepo.create(grammarExam1);
+
+        Vocabulary vocabulary1=new Vocabulary(1,"Vocabulary Course 1",teacher1.getId(),15);
+        vocabRepo.create(vocabulary1);
+
+        VocabularyExam vocabularyExam1=new VocabularyExam(1,"Vocabulary Exam 1", teacher1.getId());
+        vocabExamRepo.create(vocabularyExam1);
 
 
         StudentService studentService=new StudentService(studentRepo);
@@ -161,8 +250,15 @@ public class Main {
         ReadingController readingController=new ReadingController(readingService);
 
         readingController.enroll(1,1);
+
         GrammarController grammarController=new GrammarController(grammarService);
+
+        grammarController.enroll(1,1);
+
         VocabularyController vocabularyController=new VocabularyController(vocabService);
+
+        vocabularyController.enroll(1,1);
+
         ExamController examController=new ExamController(readingExamService,grammarExamService,vocabularyExamService);
 
         StudentView studentView=new StudentView(studentController,readingController,examController,grammarController,vocabularyController);

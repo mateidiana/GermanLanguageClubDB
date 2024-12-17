@@ -34,7 +34,7 @@ public class StudentView {
         boolean continueLoop = true;
 
         while (continueLoop) {
-            System.out.print("Select an option:\n\n1. Register as new student\n2. Enroll in a course\n3. View your reading courses\n4. View your writing courses\n5. View your grammar courses\n6. View your vocabulary courses\n0. Exit\n");
+            System.out.print("Select an option:\n\n1. Register as new student\n2. Enroll in a course\n3. View your reading courses\n4. View your grammar courses\n5. View your vocabulary courses\n0. Exit\n");
 
             String option = scanner.nextLine();
 
@@ -168,13 +168,13 @@ public class StudentView {
                         List<Question> examQuestions=examController.takeReadingExam(studentId4,examId);
                         if (examQuestions.isEmpty()) System.out.println("This exam has no questions!");
                         else{
-                            System.out.println(examController.getText(examId));
+                            //System.out.println(examController.getText(examId));
                             for (Question q:examQuestions)
                             {
                                 System.out.println(q);
                                 answer4=readAnswer(scanner);
                                 try{System.out.println(examController.handleReadingAnswer(studentId4,q.getId(),answer4)+"\n");
-                                    if (examController.handleReadingAnswer(studentId4, q.getId(),answer4).equals("Correct"))
+                                    if (examController.handleReadingAnswer(studentId4, q.getId(),answer4).equals("Correct!"))
                                         score+=2;
 
                                 } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
@@ -324,7 +324,7 @@ public class StudentView {
                                 System.out.println(q);
                                 answer4=readAnswer(scanner);
                                 try{System.out.println(examController.handleGrammarAnswer(studentId4,q.getId(),answer4)+"\n");
-                                    if (examController.handleGrammarAnswer(studentId4, q.getId(),answer4).equals("Correct"))
+                                    if (examController.handleGrammarAnswer(studentId4, q.getId(),answer4).equals("Correct!"))
                                         score+=1;
 
                                 } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
@@ -454,7 +454,7 @@ public class StudentView {
                                 System.out.println(q);
                                 answer4=readAnswer(scanner);
                                 try{System.out.println(examController.handleVocabAnswer(studentId4,q.getId(),answer4)+"\n");
-                                    if (examController.handleVocabAnswer(studentId4, q.getId(),answer4).equals("Correct"))
+                                    if (examController.handleVocabAnswer(studentId4, q.getId(),answer4).equals("Correct!"))
                                         score+=1;
 
                                 } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}

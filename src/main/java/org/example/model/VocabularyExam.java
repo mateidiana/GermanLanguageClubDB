@@ -12,7 +12,7 @@ public class VocabularyExam extends Exam {
 
     @Override
     public String toString() {
-        return "Vocabulary course{" +
+        return "Vocabulary Exam{" +
                 "id=" + this.getId() +
                 ", name='" + this.getExamName() + '\'' +
                 '}';
