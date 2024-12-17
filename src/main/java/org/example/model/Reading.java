@@ -12,7 +12,7 @@ public class Reading extends Course{
     private String text;
     private List<Question> exercises=new ArrayList<>();
 
-    public Reading(int id, String courseName, int teacher, Integer maxStudents)
+    public Reading(int id, String courseName, int teacher, int maxStudents)
     {
         super(id, courseName, teacher, maxStudents);
     }
@@ -39,6 +39,7 @@ public class Reading extends Course{
 
     public String getText(){return text;}
     public void setText(String text){this.text=text;}
+
 
     @Override
     public String toString() {
