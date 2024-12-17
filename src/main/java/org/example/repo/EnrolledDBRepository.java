@@ -1,28 +1,30 @@
 
 package org.example.repo;
+import org.example.model.Enrolled;
 import org.example.model.Exceptions.DatabaseException;
 
-import org.example.model.Grammar;
+import org.example.model.Book;
+import org.example.model.Reading;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GrammarDBRepository extends DBRepository<Grammar> {
-    public GrammarDBRepository(String dbUrl, String dbUser, String dbPassword) {
+public class EnrolledDBRepository extends DBRepository<Enrolled> {
+    public EnrolledDBRepository(String dbUrl, String dbUser, String dbPassword) {
         super(dbUrl, dbUser, dbPassword);
     }
 
     @Override
-    public void create(Grammar obj) {
-        String sql = "INSERT INTO GRAMMAR(id, name, " +
-                " teacher_id, max_students) VALUES(?, ?, ?, ?)";
+    public void create(Enrolled obj) {
+        String sql = "INSERT INTO enrolled(id, student_id, course_id) " +
+                "  VALUES(?, ?, ?)";
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, obj.getId());
-            statement.setString(2, obj.getCourseName());
-            statement.setInt(3, obj.getTeacher());
-            statement.setInt(4, obj.getAvailableSlots());
+            statement.setInt(2, obj.getStudent());
+            statement.setInt(3, obj.getCourse());
             statement.execute();
         } catch (SQLException ex) {
             throw new DatabaseException("Database error");
@@ -30,8 +32,8 @@ public class GrammarDBRepository extends DBRepository<Grammar> {
     }
 
     @Override
-    public Grammar read(int id) {
-        String sql = "SELECT * FROM GRAMMAR WHERE id = ?";
+    public Enrolled read(int id) {
+        String sql = "SELECT * FROM enrolled WHERE id = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -48,14 +50,13 @@ public class GrammarDBRepository extends DBRepository<Grammar> {
     }
 
     @Override
-    public void update(Grammar obj) {
-        String sql = "UPDATE GRAMMAR SET name = ?, "
-                + " teacher_id = ?, max_students= ? WHERE ID = ?";
+    public void update(Enrolled obj) {
+        String sql = "UPDATE enrolled SET student_id = ?, "
+                + " course_id = ? WHERE ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, obj.getCourseName());
-            statement.setInt(2, obj.getTeacher());
-            statement.setInt(3, obj.getAvailableSlots());
-            statement.setInt(4, obj.getId());
+            statement.setInt(1, obj.getStudent());
+            statement.setInt(2, obj.getCourse());
+            statement.setInt(3, obj.getId());
             statement.execute();
         } catch (SQLException e) {
             throw new DatabaseException("Database error");
@@ -65,7 +66,7 @@ public class GrammarDBRepository extends DBRepository<Grammar> {
 
     @Override
     public void delete(int id){
-        String sql = "DELETE FROM GRAMMAR WHERE id = ?";
+        String sql = "DELETE FROM enrolled WHERE id = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.execute();
@@ -75,22 +76,22 @@ public class GrammarDBRepository extends DBRepository<Grammar> {
     }
 
     @Override
-    public List<Grammar> getAll(){
-        String sql = "SELECT * FROM GRAMMAR";
+    public List<Enrolled> getAll(){
+        String sql = "SELECT * FROM enrolled";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
-            List<Grammar> grammarcourses = new ArrayList<>();
+            List<Enrolled> idkanymore = new ArrayList<>();
             while(resultSet.next()){
-                grammarcourses.add(extractFromResultSet(resultSet));
+                idkanymore.add(extractFromResultSet(resultSet));
             }
-            return grammarcourses;
+            return idkanymore;
         } catch (SQLException e) {
             throw new DatabaseException("Database error");
         }
     }
 
-    private Grammar extractFromResultSet(ResultSet resultSet) throws SQLException {
-        Grammar grammar=new Grammar(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getInt("teacher_id"),resultSet.getInt("max_students"));
-        return grammar;
+    private Enrolled extractFromResultSet(ResultSet resultSet) throws SQLException {
+        Enrolled thing=new Enrolled(resultSet.getInt("id"),resultSet.getInt("student_id"),resultSet.getInt("course_id"));
+        return thing;
     }
 }

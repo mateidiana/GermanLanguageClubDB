@@ -52,12 +52,13 @@ public class ReadingDBRepository extends DBRepository<Reading> {
         String sql = "UPDATE READING SET name = ?, text = ?, title = ?, author = ?,"
                 + " teacher_id = ?, max_students= ? WHERE ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(2, obj.getCourseName());
-            statement.setString(3, obj.getText());
-            statement.setString(4, obj.getTextTitle());
-            statement.setString(5, obj.getTextAuthor());
-            statement.setInt(6, obj.getTeacher());
-            statement.setInt(7, obj.getAvailableSlots());
+            statement.setString(1, obj.getCourseName());
+            statement.setString(2, obj.getText());
+            statement.setString(3, obj.getTextTitle());
+            statement.setString(4, obj.getTextAuthor());
+            statement.setInt(5, obj.getTeacher());
+            statement.setInt(6, obj.getAvailableSlots());
+            statement.setInt(7, obj.getId());
             statement.execute();
         } catch (SQLException e) {
             throw new DatabaseException("Database error");

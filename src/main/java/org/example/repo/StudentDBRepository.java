@@ -52,7 +52,7 @@ public class StudentDBRepository extends DBRepository<Student> {
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setString(1, obj.getName());
 
-            statement.setInt(9, obj.getId());
+            statement.setInt(2, obj.getId());
             statement.execute();
         } catch (SQLException e) {
             throw new DatabaseException("Database error");

@@ -2,21 +2,21 @@
 package org.example.repo;
 import org.example.model.Exceptions.DatabaseException;
 
-import org.example.model.Grammar;
+import org.example.model.Vocabulary;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GrammarDBRepository extends DBRepository<Grammar> {
-    public GrammarDBRepository(String dbUrl, String dbUser, String dbPassword) {
+public class VocabularyDBRepository extends DBRepository<Vocabulary> {
+    public VocabularyDBRepository(String dbUrl, String dbUser, String dbPassword) {
         super(dbUrl, dbUser, dbPassword);
     }
 
     @Override
-    public void create(Grammar obj) {
-        String sql = "INSERT INTO GRAMMAR(id, name, " +
+    public void create(Vocabulary obj) {
+        String sql = "INSERT INTO VOCABULARY(id, name, " +
                 " teacher_id, max_students) VALUES(?, ?, ?, ?)";
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, obj.getId());
@@ -30,8 +30,8 @@ public class GrammarDBRepository extends DBRepository<Grammar> {
     }
 
     @Override
-    public Grammar read(int id) {
-        String sql = "SELECT * FROM GRAMMAR WHERE id = ?";
+    public Vocabulary read(int id) {
+        String sql = "SELECT * FROM VOCABULARY WHERE id = ?";
 
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -48,8 +48,8 @@ public class GrammarDBRepository extends DBRepository<Grammar> {
     }
 
     @Override
-    public void update(Grammar obj) {
-        String sql = "UPDATE GRAMMAR SET name = ?, "
+    public void update(Vocabulary obj) {
+        String sql = "UPDATE VOCABULARY SET name = ?, "
                 + " teacher_id = ?, max_students= ? WHERE ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, obj.getCourseName());
@@ -65,7 +65,7 @@ public class GrammarDBRepository extends DBRepository<Grammar> {
 
     @Override
     public void delete(int id){
-        String sql = "DELETE FROM GRAMMAR WHERE id = ?";
+        String sql = "DELETE FROM VOCABULARY WHERE id = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.execute();
@@ -75,22 +75,22 @@ public class GrammarDBRepository extends DBRepository<Grammar> {
     }
 
     @Override
-    public List<Grammar> getAll(){
-        String sql = "SELECT * FROM GRAMMAR";
+    public List<Vocabulary> getAll(){
+        String sql = "SELECT * FROM VOCABULARY";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
-            List<Grammar> grammarcourses = new ArrayList<>();
+            List<Vocabulary> vocabcourses = new ArrayList<>();
             while(resultSet.next()){
-                grammarcourses.add(extractFromResultSet(resultSet));
+                vocabcourses.add(extractFromResultSet(resultSet));
             }
-            return grammarcourses;
+            return vocabcourses;
         } catch (SQLException e) {
             throw new DatabaseException("Database error");
         }
     }
 
-    private Grammar extractFromResultSet(ResultSet resultSet) throws SQLException {
-        Grammar grammar=new Grammar(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getInt("teacher_id"),resultSet.getInt("max_students"));
-        return grammar;
+    private Vocabulary extractFromResultSet(ResultSet resultSet) throws SQLException {
+        Vocabulary vocabulary=new Vocabulary(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getInt("teacher_id"),resultSet.getInt("max_students"));
+        return vocabulary;
     }
 }

@@ -51,9 +51,9 @@ public class BookDBRepository extends DBRepository<Book> {
         String sql = "UPDATE BOOK SET title = ?, "
                 + " author = ? WHERE ID = ?";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(2, obj.getTitle());
-            statement.setString(3, obj.getAuthor());
-
+            statement.setString(1, obj.getTitle());
+            statement.setString(2, obj.getAuthor());
+            statement.setInt(3, obj.getId());
             statement.execute();
         } catch (SQLException e) {
             throw new DatabaseException("Database error");
