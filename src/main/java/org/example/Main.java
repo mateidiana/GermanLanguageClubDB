@@ -66,8 +66,9 @@ public class Main {
 //        IRepository<Enrolled> enrolledRepo = new InMemoryRepository<>();
 //        IRepository<BookBelongsToCourse> bookBelongsRepo = new InMemoryRepository<>();
 
-        IRepository<Student> studentRepo=new StudentDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
         IRepository<Teacher> teacherRepo=new TeacherDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<Student> studentRepo=new StudentDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+
         IRepository<Reading> readingRepo=new ReadingDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
         IRepository<Grammar> grammarRepo=new GrammarDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
         IRepository<Vocabulary> vocabRepo=new VocabularyDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
@@ -86,18 +87,18 @@ public class Main {
         Student student2=new Student("Student2",2);
         Student student3=new Student("Student3",3);
 
-        studentRepo.create(student1);
-        studentRepo.create(student2);
-        studentRepo.create(student3);
+//        studentRepo.create(student1);
+//        studentRepo.create(student2);
+//        studentRepo.create(student3);
 
         //Insert data into teacher
         Teacher teacher1=new Teacher("Teacher1",1);
         Teacher teacher2=new Teacher("Teacher2",2);
         Teacher teacher3=new Teacher("Teacher3",3);
 
-        teacherRepo.create(teacher1);
-        teacherRepo.create(teacher2);
-        teacherRepo.create(teacher3);
+//        teacherRepo.create(teacher1);
+//        teacherRepo.create(teacher2);
+//        teacherRepo.create(teacher3);
 
 
         //Insert data into question
@@ -115,10 +116,10 @@ public class Main {
         question3.setReadingExamId(1);
         question4.setReadingExamId(1);
 
-        questionRepo.create(question1);
-        questionRepo.create(question2);
-        questionRepo.create(question3);
-        questionRepo.create(question4);
+//        questionRepo.create(question1);
+//        questionRepo.create(question2);
+//        questionRepo.create(question3);
+//        questionRepo.create(question4);
 
         Question question5=new Question(5,"Du (brauchen) _ Hilfe.","brauchst");
         Question question6=new Question(6,"Ich bin _ Hause.","zu");
@@ -153,16 +154,16 @@ public class Main {
         question13.setGrammarExamId(2);
         question14.setGrammarExamId(2);
 
-        questionRepo.create(question5);
-        questionRepo.create(question6);
-        questionRepo.create(question7);
-        questionRepo.create(question8);
-        questionRepo.create(question9);
-        questionRepo.create(question10);
-        questionRepo.create(question11);
-        questionRepo.create(question12);
-        questionRepo.create(question13);
-        questionRepo.create(question14);
+//        questionRepo.create(question5);
+//        questionRepo.create(question6);
+//        questionRepo.create(question7);
+//        questionRepo.create(question8);
+//        questionRepo.create(question9);
+//        questionRepo.create(question10);
+//        questionRepo.create(question11);
+//        questionRepo.create(question12);
+//        questionRepo.create(question13);
+//        questionRepo.create(question14);
 
 
 
@@ -201,22 +202,22 @@ public class Main {
         word9.setVocabExamId(3);
         word10.setVocabExamId(3);
 
-        wordRepo.create(word1);
-        wordRepo.create(word2);
-        wordRepo.create(word3);
-        wordRepo.create(word4);
-        wordRepo.create(word5);
-        wordRepo.create(word6);
-        wordRepo.create(word7);
-        wordRepo.create(word8);
-        wordRepo.create(word9);
-        wordRepo.create(word10);
+//        wordRepo.create(word1);
+//        wordRepo.create(word2);
+//        wordRepo.create(word3);
+//        wordRepo.create(word4);
+//        wordRepo.create(word5);
+//        wordRepo.create(word6);
+//        wordRepo.create(word7);
+//        wordRepo.create(word8);
+//        wordRepo.create(word9);
+//        wordRepo.create(word10);
 
         //Insert data into book
         Book book1=new Book(1,"Das Schloss", "Franz Kafka");
         Book book2=new Book(2,"Die Verwandlung", "Franz Kafka");
-        bookRepo.create(book1);
-        bookRepo.create(book2);
+        //bookRepo.create(book1);
+        //bookRepo.create(book2);
 
         //Insert data into reading
         Reading reading1=new Reading(1,"Reading1",teacher1.getId(),25);
@@ -224,31 +225,31 @@ public class Main {
         reading1.setText("Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"");
         reading1.setTextAuthor("Franz Kafka");
         reading1.setTextTitle("Der Aufbruch");
-        readingRepo.create(reading1);
+        //readingRepo.create(reading1);
 
 
         BookBelongsToCourse bookBelongsToCourse1=new BookBelongsToCourse(1,1,1);
         BookBelongsToCourse bookBelongsToCourse2=new BookBelongsToCourse(2,1,2);
-        bookBelongsRepo.create(bookBelongsToCourse1);
-        bookBelongsRepo.create(bookBelongsToCourse2);
+        //bookBelongsRepo.create(bookBelongsToCourse1);
+        //bookBelongsRepo.create(bookBelongsToCourse2);
 
 
         ReadingExam readingExam1=new ReadingExam(1,"Reading Exam 1",teacher1.getId());
-        readingExamRepo.create(readingExam1);
+        //readingExamRepo.create(readingExam1);
 
 
         Grammar grammar1=new Grammar(10,"Grammar1",teacher1.getId(),30);
-        grammarRepo.create(grammar1);
+        //grammarRepo.create(grammar1);
 
 
         GrammarExam grammarExam1=new GrammarExam(2,"Grammar exam 1", teacher1.getId());
-        grammarExamRepo.create(grammarExam1);
+        //grammarExamRepo.create(grammarExam1);
 
         Vocabulary vocabulary1=new Vocabulary(15,"Vocabulary Course 1",teacher1.getId(),15);
-        vocabRepo.create(vocabulary1);
+        //vocabRepo.create(vocabulary1);
 
         VocabularyExam vocabularyExam1=new VocabularyExam(3,"Vocabulary Exam 1", teacher1.getId());
-        vocabExamRepo.create(vocabularyExam1);
+        //vocabExamRepo.create(vocabularyExam1);
 
 
         StudentService studentService=new StudentService(studentRepo);
@@ -264,15 +265,15 @@ public class Main {
         TeacherController teacherController=new TeacherController(teacherService);
         ReadingController readingController=new ReadingController(readingService);
 
-        readingController.enroll(1,1);
+        //readingController.enroll(1,1);
 
         GrammarController grammarController=new GrammarController(grammarService);
 
-        grammarController.enroll(1,10);
+        //grammarController.enroll(1,10);
 
         VocabularyController vocabularyController=new VocabularyController(vocabService);
 
-        vocabularyController.enroll(1,15);
+        //vocabularyController.enroll(1,15);
 
         ExamController examController=new ExamController(readingExamService,grammarExamService,vocabularyExamService);
 
