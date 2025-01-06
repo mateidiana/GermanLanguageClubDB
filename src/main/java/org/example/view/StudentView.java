@@ -38,7 +38,7 @@ public class StudentView {
     }
 
 
-    public void start(){
+    public void startvechi(){
         Scanner scanner = new Scanner(System.in);
         boolean continueLoop = true;
 
@@ -79,7 +79,7 @@ public class StudentView {
         }
     }
 
-    public void start2(){
+    public void start(){
         Scanner scanner = new Scanner(System.in);
         boolean continueLoop = true;
 
@@ -104,7 +104,7 @@ public class StudentView {
 
                     break;
                 case "2":
-                    System.out.print("Enter your student ID: ");
+                    System.out.print("Enter your teacher ID: ");
                     int userId=scanner.nextInt();
                     try {
                         // Attempt to retrieve the student
@@ -118,6 +118,7 @@ public class StudentView {
                         // Directly return to the main menu
                         return;
                     }
+                    break;
                     //setUserId(userId);
                     //actions();
                 default:
