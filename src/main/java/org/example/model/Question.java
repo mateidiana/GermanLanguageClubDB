@@ -23,9 +23,9 @@ public class Question extends Entity{
 
     public int getReadingId(){return readingId;}
     public void setReadingId(int readingId){this.readingId=readingId;}
-
     public int getGrammarId(){return grammarId;}
     public void setGrammarId(int grammarId){this.grammarId=grammarId;}
+
     public int getReadingExamId(){return readingExamId;}
     public void setReadingExamId(int readingId){this.readingExamId=readingId;}
     public int getGrammarExamId(){return grammarExamId;}

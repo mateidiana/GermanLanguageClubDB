@@ -18,7 +18,9 @@ public class GrammarController {
 
     public String handleAnswer(int studentId, int questionId, String answer){return grammarService.handleAnswer(studentId,questionId,answer);}
 
-    //public List<Question> reviewPastGrammarMistakes(int studentId){return grammarService.reviewPastGrammarMistakes(studentId);}
+    public List<PastMistake> reviewPastGrammarMistakes(int studentId, int courseId){return grammarService.reviewPastMistakes(studentId, courseId);}
+
+    public String handlePMAnswer(int studentId, int pastMistakeId, String answer){return grammarService.handlePMAnswer(studentId,pastMistakeId,answer);}
 
     public List<Grammar> getAvailableGrammarCourses(){return grammarService.getAvailableGrammarCourses();}
 

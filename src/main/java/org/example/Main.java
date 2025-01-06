@@ -81,6 +81,8 @@ public class Main {
         IRepository<Book> bookRepo=new BookDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
         IRepository<Enrolled> enrolledRepo = new EnrolledDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
         IRepository<BookBelongsToCourse> bookBelongsRepo = new BookBelongsToCourseDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<PastMistake> pastMistakesRepo = new PastMistakesDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
+        IRepository<PastWordMistake> pastWordMistakesRepo = new PastWordMistakesDBRepository("jdbc:mysql://127.0.0.1:3306/germanlanguageclub","root","Bill4761");
 
         //Insert data into student
         Student student1=new Student("Student1",1);
@@ -254,8 +256,8 @@ public class Main {
 
         StudentService studentService=new StudentService(studentRepo);
         TeacherService teacherService=new TeacherService(teacherRepo);
-        ReadingService readingService=new ReadingService(readingRepo,studentRepo,teacherRepo,questionRepo,bookRepo,enrolledRepo,bookBelongsRepo);
-        GrammarService grammarService=new GrammarService(grammarRepo,studentRepo,teacherRepo,questionRepo, enrolledRepo);
+        ReadingService readingService=new ReadingService(readingRepo,studentRepo,teacherRepo,questionRepo,bookRepo,enrolledRepo,bookBelongsRepo,pastMistakesRepo);
+        GrammarService grammarService=new GrammarService(grammarRepo,studentRepo,teacherRepo,questionRepo, enrolledRepo, pastMistakesRepo);
         VocabService vocabService=new VocabService(vocabRepo,studentRepo,teacherRepo,wordRepo,enrolledRepo);
         ReadingExamService readingExamService=new ReadingExamService(readingExamRepo,studentRepo,teacherRepo,questionRepo,examResultRepo,readingRepo,enrolledRepo);
         GrammarExamService grammarExamService=new GrammarExamService(grammarExamRepo,studentRepo,teacherRepo,questionRepo,examResultRepo,grammarRepo,enrolledRepo);

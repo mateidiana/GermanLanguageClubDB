@@ -19,13 +19,15 @@ public class GrammarService {
 
     private final IRepository<Enrolled> enrolledRepo;
 
+    private final IRepository<PastMistake> pastMistakesRepo;
 
-    public GrammarService(IRepository<Grammar> grammarRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo, IRepository<Enrolled> enrolledRepo) {
+    public GrammarService(IRepository<Grammar> grammarRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo, IRepository<Enrolled> enrolledRepo,IRepository<PastMistake> pastMistakesRepo) {
         this.grammarRepo = grammarRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
         this.questionRepo = questionRepo;
         this.enrolledRepo = enrolledRepo;
+        this.pastMistakesRepo=pastMistakesRepo;
     }
 
     public Student getStudentById(int studentId){
@@ -62,6 +64,25 @@ public class GrammarService {
                 return question;
         }
         throw new EntityNotFoundException("Question not found!");
+    }
+
+    public PastMistake getPastMistakeById(int mistakeId){
+        idDataCheck(mistakeId);
+        for (PastMistake misteiccc : pastMistakesRepo.getAll()) {
+            if (misteiccc.getId()==mistakeId)
+                return misteiccc;
+        }
+        throw new EntityNotFoundException("Question not found!");
+    }
+
+    public List<PastMistake> getPastMistakes(int courseId, int studentId){
+        idDataCheck(courseId);
+        idDataCheck(studentId);
+        List<PastMistake> misteics=new ArrayList<>();
+        for( PastMistake pm: pastMistakesRepo.getAll())
+            if (pm.getGrammarId()==courseId && pm.getStudentId()==studentId)
+                misteics.add(pm);
+        return misteics;
     }
 
     public List<Student> getEnrolled(int courseId){
@@ -150,8 +171,50 @@ public class GrammarService {
         Question question=getQuestionById(questionId);
         if (answer.equals(question.getRightAnswer()))
             return "Correct!";
-        else
+        else {
+            List<PastMistake> misteicssssss=pastMistakesRepo.getAll();
+            PastMistake curucaca=misteicssssss.get(misteicssssss.size()-1);
+            int aidi=curucaca.getId();
+            PastMistake misteic=new PastMistake( aidi,question.getQuestion(), question.getRightAnswer(),studentId );
+            misteic.setGrammarId(question.getGrammarId());
+            pastMistakesRepo.create(misteic);  //aici o adaug in tabela vietii aca e greseala la practice
             return "Wrong!";
+        }
+    }
+
+    public List<PastMistake> reviewPastMistakes(int studentId, int courseId){
+        idDataCheck(studentId);
+        idDataCheck(courseId);
+        int isEnrolled=0;
+
+        for (Grammar grammar: getGrammarCourses(studentId))
+            if (grammar.getId()==courseId)
+            {
+                isEnrolled=1;
+                break;
+            }
+        if (isEnrolled==0)
+            return new ArrayList<>();
+        else{
+            return getPastMistakes(courseId,studentId);
+        }
+    }
+
+    public String handlePMAnswer(int studentId, int pastMistakeId, String answer){
+        idDataCheck(studentId);
+        idDataCheck(pastMistakeId);
+        stringDataCheck(answer);
+        answerDataCheck(answer);
+
+        PastMistake misteic=getPastMistakeById(pastMistakeId);
+        if (answer.equals(misteic.getRightAnswer())) {
+            pastMistakesRepo.delete(pastMistakeId);
+            return "Correct!";
+        }
+        else{
+
+            return "Wrong!";
+        }
     }
 
     public List<Grammar> getAvailableGrammarCourses(){
@@ -233,6 +296,10 @@ public class GrammarService {
 
     }
 
+    public void answerDataCheck(String string){
+        if (!string.equals("wahr") && !string.equals("falsch"))
+            throw new ValidationException("Invalid answer!");
+    }
 
     public void idDataCheck(int id){
         if (id<1)

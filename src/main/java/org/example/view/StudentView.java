@@ -19,6 +19,15 @@ public class StudentView {
     private GrammarController grammarController;
     private VocabularyController vocabController;
 
+    private int userId;  //asta vine in loc de   int studentId=readStudentId(scanner);   asta
+
+    public int getUserId() {
+        return userId;
+    }
+    public void setUserId(int smth){
+        userId=smth;
+    }
+
     public StudentView(StudentController studentController, ReadingController readingController, ExamController examController, GrammarController grammarController, VocabularyController vocabController){
         this.studentController=studentController;
         this.readingController=readingController;
@@ -70,6 +79,81 @@ public class StudentView {
         }
     }
 
+    public void start2(){
+        Scanner scanner = new Scanner(System.in);
+        boolean continueLoop = true;
+
+        while (continueLoop) {
+            System.out.print("Select an option:\n\n1. Register as new student\n2. Sign in\n0. Exit");
+
+            String option = scanner.nextLine();
+
+            switch (option) {
+                case "0":
+                    continueLoop = false;
+                    break;
+                case "1":
+                    int studentId=readStudentId(scanner);
+                    String name=readStudentName(scanner);
+                    try{
+                        if (studentController.createStudent(studentId,name))
+                            System.out.println("Registration successful!");
+                        else System.out.println("Id already in use!");
+
+                    } catch(ValidationException e){ System.out.println(e.getMessage());}
+
+                    break;
+                case "2":
+                    System.out.print("Enter your student ID: ");
+                    int userId=scanner.nextInt();
+                    try {
+                        // Attempt to retrieve the student
+                        Student example = studentController.getStudentById(userId);
+                        // If successful, set the user ID and proceed
+                        setUserId(userId);
+                        actions();
+                    } catch (EntityNotFoundException e) {
+                        // Handle case where student is not found
+                        System.out.println("Student not found. Please register first!");
+                        // Directly return to the main menu
+                        return;
+                    }
+                    //setUserId(userId);
+                    //actions();
+                default:
+            }
+        }
+    }
+
+    public void actions(){
+        Scanner scanner = new Scanner(System.in);
+        boolean continueLoop = true;
+
+        while (continueLoop) {
+            System.out.print("Select an option:\n\n1. Enroll in a course\n2. View your reading courses\n3. View your grammar courses\n4. View your vocabulary courses\n0. Exit\n");
+
+            String option = scanner.nextLine();
+
+            switch (option) {
+                case "0":
+                    continueLoop = false;
+                    break;
+                case "1":
+                    enrollMenu();
+                    break;
+                case "2":
+                    readingMenu();
+                    break;
+                case "3":
+                    grammarMenu();
+                    break;
+                case "4":
+                    vocabularyMenu();
+                    break;
+                default:
+            }
+        }
+    }
 
     public void readingMenu(){
         Scanner scanner = new Scanner(System.in);
@@ -87,9 +171,9 @@ public class StudentView {
 
                 case "1":
 
-                    int studentId=readStudentId(scanner);
+                    //int studentId=readStudentId(scanner);
                     try{
-                        List<Reading> courses=readingController.showEnrolledReadingCourses(studentId);
+                        List<Reading> courses=readingController.showEnrolledReadingCourses(getUserId());
                         if (courses.isEmpty())
                             System.out.println("You are not enrolled in any reading course!");
                         else{ for (Reading reading:courses)
@@ -101,11 +185,11 @@ public class StudentView {
 
                 case "2":
 
-                    int studentId1=readStudentId(scanner);
+                    //int studentId1=readStudentId(scanner);
                     int courseId=readCourseId(scanner);
                     String answer;
                     try{
-                        List<Question> questions=readingController.practiceReading(studentId1,courseId);
+                        List<Question> questions=readingController.practiceReading(getUserId(),courseId);
                         if (questions.isEmpty())
                             System.out.println("This course has no questions!");
                         else{
@@ -116,8 +200,10 @@ public class StudentView {
                             {
                                 System.out.println(q);
                                 answer=readAnswer(scanner);
-                                try{System.out.println(readingController.handleAnswer(studentId1,q.getId(),answer)+"\n");
-                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+                                try{
+                                    System.out.println(readingController.handleAnswer(getUserId(),q.getId(),answer)+"\n");
+                                }
+                                catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
 
                             }
                         }
@@ -128,22 +214,23 @@ public class StudentView {
 
                 case "3":
 //                    int studentId3=readStudentId(scanner);
-//                    String answer3;
-//                    try{
-//                        List<Question> pastMistakes=readingController.reviewPastReadingMistakes(studentId3);
-//                        if (pastMistakes.isEmpty())
-//                            System.out.println("You have no past mistakes yet!");
-//                        else{
-//                            for (Question q:pastMistakes)
-//                            {
-//                                System.out.println(q);
-//                                answer3=readAnswer(scanner);
-//                                try{System.out.println(readingController.handleAnswer(studentId3,q.getId(),answer3)+"\n");
-//                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
-//                            }
-//                        }
-//
-//                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+                    int courseId69=readCourseId(scanner);
+                    String answer3;
+                    try{
+                        List<PastMistake> pastMistakes=readingController.reviewPastReadingMistakes(getUserId(), courseId69);
+                        if (pastMistakes.isEmpty())
+                            System.out.println("You have no past mistakes yet!");
+                        else{
+                            for (PastMistake pm:pastMistakes)
+                            {
+                                System.out.println(pm);
+                                answer3=readAnswer(scanner);
+                                try{System.out.println(readingController.handlePMAnswer(getUserId(),pm.getId(),answer3)+"\n");
+                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+                            }
+                        }
+
+                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
 
                     break;
 
@@ -159,13 +246,13 @@ public class StudentView {
                             System.out.println(exam);
                     }
 
-                    int studentId4=readStudentId(scanner);
+                    //int studentId4=readStudentId(scanner);
                     int examId=readExamId(scanner);
                     String answer4;
                     float score= 2.0F;
 
                     try{
-                        List<Question> examQuestions=examController.takeReadingExam(studentId4,examId);
+                        List<Question> examQuestions=examController.takeReadingExam(getUserId(),examId);
                         if (examQuestions.isEmpty()) System.out.println("This exam has no questions!");
                         else{
                             //System.out.println(examController.getText(examId));
@@ -173,13 +260,13 @@ public class StudentView {
                             {
                                 System.out.println(q);
                                 answer4=readAnswer(scanner);
-                                try{System.out.println(examController.handleReadingAnswer(studentId4,q.getId(),answer4)+"\n");
-                                    if (examController.handleReadingAnswer(studentId4, q.getId(),answer4).equals("Correct!"))
+                                try{System.out.println(examController.handleReadingAnswer(getUserId(),q.getId(),answer4)+"\n");
+                                    if (examController.handleReadingAnswer(getUserId(), q.getId(),answer4).equals("Correct!"))
                                         score+=2;
 
                                 } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
                             }
-                            examController.addReadingResult(studentId4,examId,score);
+                            examController.addReadingResult(getUserId(),examId,score);
                         }
 
                     }catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
@@ -189,9 +276,9 @@ public class StudentView {
 
                 case "5":
 
-                    int studentId5=readStudentId(scanner);
+                    //int studentId5=readStudentId(scanner);
                     try {
-                        List<ExamResult> results = examController.showReadingExamResults(studentId5);
+                        List<ExamResult> results = examController.showReadingExamResults(getUserId());
 
                         if (results.isEmpty())
                             System.out.println("You have taken no reading exams so far!");
@@ -204,10 +291,10 @@ public class StudentView {
 
                 case "6":
 
-                    int studentId6=readStudentId(scanner);
+                    //int studentId6=readStudentId(scanner);
                     int courseId5=readCourseId(scanner);
                     try{
-                        List<Book> books=readingController.viewMandatoryBooks(studentId6,courseId5);
+                        List<Book> books=readingController.viewMandatoryBooks(getUserId(),courseId5);
                         if (books.isEmpty())
                             System.out.println("You are not enrolled in this course!");
                         else {
@@ -239,9 +326,9 @@ public class StudentView {
                     break;
                 case "1":
 
-                    int studentId=readStudentId(scanner);
+                    //int studentId=readStudentId(scanner);
                     try{
-                        List<Grammar> courses=grammarController.showEnrolledGrammarCourses(studentId);
+                        List<Grammar> courses=grammarController.showEnrolledGrammarCourses(getUserId());
                         if (courses.isEmpty())
                             System.out.println("You are not enrolled in any grammar course!");
                         else{ for (Grammar grammar:courses)
@@ -253,11 +340,11 @@ public class StudentView {
 
                 case "2":
 
-                    int studentId1=readStudentId(scanner);
+                    //int studentId1=readStudentId(scanner);
                     int courseId=readCourseId(scanner);
                     String answer;
                     try{
-                        List<Question> questions=grammarController.practiceGrammar(studentId1,courseId);
+                        List<Question> questions=grammarController.practiceGrammar(getUserId(),courseId);
                         if (questions.isEmpty())
                             System.out.println("This course has no questions!");
                         else{
@@ -265,7 +352,7 @@ public class StudentView {
                             {
                                 System.out.println(q);
                                 answer=readAnswer(scanner);
-                                try{System.out.println(grammarController.handleAnswer(studentId1,q.getId(),answer)+"\n");
+                                try{System.out.println(grammarController.handleAnswer(getUserId(),q.getId(),answer)+"\n");
                                 } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
 
                             }
@@ -278,22 +365,23 @@ public class StudentView {
                 case "3":
 
 //                    int studentId3=readStudentId(scanner);
-//                    String answer3;
-//                    try{
-//                        List<Question> pastMistakes=grammarController.reviewPastGrammarMistakes(studentId3);
-//                        if (pastMistakes.isEmpty())
-//                            System.out.println("You have no past mistakes yet!");
-//                        else{
-//                            for (Question q:pastMistakes)
-//                            {
-//                                System.out.println(q);
-//                                answer3=readAnswer(scanner);
-//                                try{System.out.println(grammarController.handleAnswer(studentId3,q.getId(),answer3)+"\n");
-//                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
-//                            }
-//                        }
-//
-//                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+                    String answer3;
+                    int courseId70=readCourseId(scanner);
+                    try{
+                        List<PastMistake> pastMistakes=grammarController.reviewPastGrammarMistakes(getUserId(), courseId70);
+                        if (pastMistakes.isEmpty())
+                            System.out.println("You have no past mistakes yet!");
+                        else{
+                            for (PastMistake pm:pastMistakes)
+                            {
+                                System.out.println(pm);
+                                answer3=readAnswer(scanner);
+                                try{System.out.println(grammarController.handleAnswer(getUserId(),pm.getId(),answer3)+"\n");
+                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
+                            }
+                        }
+
+                    } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
 
                     break;
 
@@ -371,9 +459,9 @@ public class StudentView {
                     break;
                 case "1":
 
-                    int studentId=readStudentId(scanner);
+                    //int studentId=readStudentId(scanner);
                     try{
-                        List<Vocabulary> courses=vocabController.showEnrolledVocabCourses(studentId);
+                        List<Vocabulary> courses=vocabController.showEnrolledVocabCourses(getUserId());
                         if (courses.isEmpty())
                             System.out.println("You are not enrolled in any vocabulary course!");
                         else{ for (Vocabulary vocab:courses)
@@ -384,11 +472,11 @@ public class StudentView {
                     break;
                 case "2":
 
-                    int studentId1=readStudentId(scanner);
+                    //int studentId1=readStudentId(scanner);
                     int courseId=readCourseId(scanner);
                     String answer;
                     try{
-                        List<Word> questions=vocabController.practiceVocabulary(studentId1,courseId);
+                        List<Word> questions=vocabController.practiceVocabulary(getUserId(),courseId);
                         if (questions.isEmpty())
                             System.out.println("This course has no questions!");
                         else{
@@ -396,7 +484,7 @@ public class StudentView {
                             {
                                 System.out.println(q);
                                 answer=readAnswer(scanner);
-                                try{System.out.println(vocabController.handleAnswer(studentId1,q.getId(),answer)+"\n");
+                                try{System.out.println(vocabController.handleAnswer(getUserId(),q.getId(),answer)+"\n");
                                 } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
 
                             }
@@ -440,26 +528,26 @@ public class StudentView {
                             System.out.println(exam);
                     }
 
-                    int studentId4=readStudentId(scanner);
+                    //int studentId4=readStudentId(scanner);
                     int examId=readExamId(scanner);
                     String answer4;
                     float score= 0.0F;
 
                     try{
-                        List<Word> examQuestions=examController.takeVocabExam(studentId4,examId);
+                        List<Word> examQuestions=examController.takeVocabExam(getUserId(),examId);
                         if (examQuestions.isEmpty()) System.out.println("This exam has no questions!");
                         else{
                             for (Word q:examQuestions)
                             {
                                 System.out.println(q);
                                 answer4=readAnswer(scanner);
-                                try{System.out.println(examController.handleVocabAnswer(studentId4,q.getId(),answer4)+"\n");
-                                    if (examController.handleVocabAnswer(studentId4, q.getId(),answer4).equals("Correct!"))
+                                try{System.out.println(examController.handleVocabAnswer(getUserId(),q.getId(),answer4)+"\n");
+                                    if (examController.handleVocabAnswer(getUserId(), q.getId(),answer4).equals("Correct!"))
                                         score+=1;
 
                                 } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
                             }
-                            examController.addVocabResult(studentId4,examId,score);
+                            examController.addVocabResult(getUserId(),examId,score);
                         }
 
                     }catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
@@ -467,9 +555,9 @@ public class StudentView {
                     break;
                 case "5":
 
-                    int studentId5=readStudentId(scanner);
+                    //int studentId5=readStudentId(scanner);
                     try {
-                        List<ExamResult> results = examController.showVocabExamResults(studentId5);
+                        List<ExamResult> results = examController.showVocabExamResults(getUserId());
 
                         if (results.isEmpty())
                             System.out.println("You have taken no vocabulary exams so far!");
@@ -502,10 +590,10 @@ public class StudentView {
                     for (Reading course:readingCourses)
                         System.out.println(course);
 
-                    int studentId=readStudentId(scanner);
+                    //int studentId=readStudentId(scanner);
                     int courseId=readCourseId(scanner);
                     try{
-                        readingController.enroll(studentId,courseId);
+                        readingController.enroll(getUserId(),courseId);
                     } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
                 }
 
@@ -518,10 +606,10 @@ public class StudentView {
                     for (Grammar course:grammarCourses)
                         System.out.println(course);
 
-                    int studentId2=readStudentId(scanner);
+                    //int studentId2=readStudentId(scanner);
                     int courseId2=readCourseId(scanner);
                     try{
-                        grammarController.enroll(studentId2,courseId2);
+                        grammarController.enroll(getUserId(),courseId2);
                     } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
                 }
 
@@ -533,10 +621,10 @@ public class StudentView {
                 else{
                     for (Vocabulary course:vocabCourses)
                         System.out.println(course);
-                    int studentId3=readStudentId(scanner);
+                    //int studentId3=readStudentId(scanner);
                     int courseId3=readCourseId(scanner);
                     try{
-                        grammarController.enroll(studentId3,courseId3);
+                        grammarController.enroll(getUserId(),courseId3);
                     } catch(ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}
                 }
 

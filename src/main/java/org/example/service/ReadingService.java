@@ -22,7 +22,9 @@ public class ReadingService {
     private final IRepository<Enrolled> enrolledRepo;
     private final IRepository<BookBelongsToCourse> bookBelongsRepo;
 
-    public ReadingService(IRepository<Reading> readingRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo, IRepository<Book> bookRepo, IRepository<Enrolled> enrolledRepo, IRepository<BookBelongsToCourse> bookBelongsRepo) {
+    private final IRepository<PastMistake> pastMistakesRepo;
+
+    public ReadingService(IRepository<Reading> readingRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, IRepository<Question> questionRepo, IRepository<Book> bookRepo, IRepository<Enrolled> enrolledRepo, IRepository<BookBelongsToCourse> bookBelongsRepo, IRepository<PastMistake> pastMistakesRepo) {
         this.readingRepo = readingRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
@@ -30,6 +32,7 @@ public class ReadingService {
         this.bookRepo = bookRepo;
         this.enrolledRepo=enrolledRepo;
         this.bookBelongsRepo=bookBelongsRepo;
+        this.pastMistakesRepo=pastMistakesRepo;
     }
 
     public Student getStudentById(int studentId){
@@ -64,6 +67,15 @@ public class ReadingService {
         for (Question question : questionRepo.getAll()) {
             if (question.getId()==questionId)
                 return question;
+        }
+        throw new EntityNotFoundException("Question not found!");
+    }
+
+    public PastMistake getPastMistakeById(int mistakeId){
+        idDataCheck(mistakeId);
+        for (PastMistake misteiccc : pastMistakesRepo.getAll()) {
+            if (misteiccc.getId()==mistakeId)
+                return misteiccc;
         }
         throw new EntityNotFoundException("Question not found!");
     }
@@ -103,6 +115,16 @@ public class ReadingService {
             if (q.getReadingId()==courseId)
                 questions.add(q);
         return questions;
+    }
+
+    public List<PastMistake> getPastMistakes(int courseId, int studentId){
+        idDataCheck(courseId);
+        idDataCheck(studentId);
+        List<PastMistake> misteics=new ArrayList<>();
+        for( PastMistake pm: pastMistakesRepo.getAll())
+            if (pm.getReadingId()==courseId && pm.getStudentId()==studentId)
+                misteics.add(pm);
+        return misteics;
     }
 
     public List<Book> getMandatoryBooks(int courseId){
@@ -177,6 +199,47 @@ public class ReadingService {
         if (answer.equals(question.getRightAnswer()))
             return "Correct!";
         else{
+            List<PastMistake> misteicssssss=pastMistakesRepo.getAll();
+            PastMistake curucaca=misteicssssss.get(misteicssssss.size()-1);
+            int aidi=curucaca.getId();
+            PastMistake misteic=new PastMistake( aidi,question.getQuestion(), question.getRightAnswer(),studentId );
+            misteic.setReadingId(question.getReadingId());
+            pastMistakesRepo.create(misteic);  //aici o adaug in tabela vietii aca e greseala la practice
+            return "Wrong!";
+        }
+    }
+
+    public List<PastMistake> reviewPastMistakes(int studentId, int courseId){
+        idDataCheck(studentId);
+        idDataCheck(courseId);
+        int isEnrolled=0;
+
+        for (Reading reading: getReadingCourses(studentId))
+            if (reading.getId()==courseId)
+            {
+                isEnrolled=1;
+                break;
+            }
+        if (isEnrolled==0)
+            return new ArrayList<>();
+        else{
+            return getPastMistakes(courseId,studentId);
+        }
+    }
+
+    public String handlePMAnswer(int studentId, int pastMistakeId, String answer){
+        idDataCheck(studentId);
+        idDataCheck(pastMistakeId);
+        stringDataCheck(answer);
+        answerDataCheck(answer);
+
+        PastMistake misteic=getPastMistakeById(pastMistakeId);
+        if (answer.equals(misteic.getRightAnswer())) {
+            pastMistakesRepo.delete(pastMistakeId);
+            return "Correct!";
+        }
+        else{
+
             return "Wrong!";
         }
     }

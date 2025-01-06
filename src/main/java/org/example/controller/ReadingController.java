@@ -1,6 +1,5 @@
 package org.example.controller;
 import org.example.service.ReadingService;
-import org.example.model.Exceptions.*;
 import org.example.model.*;
 
 import java.util.List;
@@ -22,7 +21,9 @@ public class ReadingController {
 
     public String handleAnswer(int studentId, int questionId, String answer){return readingService.handleAnswer(studentId,questionId,answer);}
 
-    //public List<Question> reviewPastReadingMistakes(int studentId){return readingService.reviewPastReadingMistakes(studentId);}
+    public String handlePMAnswer(int studentId, int pastMistakeId, String answer){return readingService.handlePMAnswer(studentId,pastMistakeId,answer);}
+
+    public List<PastMistake> reviewPastReadingMistakes(int studentId, int courseId69){return readingService.reviewPastMistakes(studentId, courseId69);}
 
     public List<Reading> getAvailableReadingCourses(){return readingService.getAvailableReadingCourses();}
 
