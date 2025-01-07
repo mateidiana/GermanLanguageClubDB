@@ -499,13 +499,13 @@ public class StudentView {
 //                    int studentId3=readStudentId(scanner);
 //                    String answer3;
 //                    try{
-//                        List<Word> pastMistakes=vocabController.reviewPastVocabMistakes(studentId3);
+//                        List<PastWordMistake> pastMistakes=vocabController.reviewPastVocabMistakes(getUserId());
 //                        if (pastMistakes.isEmpty())
 //                            System.out.println("You have no past mistakes yet!");
 //                        else{
-//                            for (Word q:pastMistakes)
+//                            for (PastWordMistake pwm:pastMistakes)
 //                            {
-//                                System.out.println(q);
+//                                System.out.println(pwm);
 //                                answer3=readAnswer(scanner);
 //                                try{System.out.println(vocabController.handleAnswer(studentId3,q.getId(),answer3)+"\n");
 //                                } catch (ValidationException | EntityNotFoundException e){ System.out.println(e.getMessage());}

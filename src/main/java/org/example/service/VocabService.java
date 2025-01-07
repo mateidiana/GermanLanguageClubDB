@@ -148,6 +148,7 @@ public class VocabService {
         if (answer.equals(word.getMeaning()))
             return "Correct!";
         else{
+            //trebe adaugat in past word mistakes
             return "Wrong!";
         }
     }
